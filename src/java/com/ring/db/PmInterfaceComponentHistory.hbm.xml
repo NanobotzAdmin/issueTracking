@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.ring.db.PmInterfaceComponentHistory" table="pm_interface_component_history" catalog="nanobotz_ring" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="pmInterfaceComponent" class="com.ring.db.PmInterfaceComponent" fetch="select">
+            <column name="pm_interface_components_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="pmUserRole" class="com.ring.db.PmUserRole" fetch="select">
+            <column name="pm_user_role_id" />
+        </many-to-one>
+        <many-to-one name="umUserByCreatedBy" class="com.ring.db.UmUser" fetch="select">
+            <column name="created_by" not-null="true" />
+        </many-to-one>
+        <many-to-one name="umUserByUmUserId" class="com.ring.db.UmUser" fetch="select">
+            <column name="um_user_id" />
+        </many-to-one>
+        <property name="createdDate" type="timestamp">
+            <column name="created_date" length="19" />
+        </property>
+        <property name="interfaceName" type="string">
+            <column name="interface_name" length="45" />
+        </property>
+        <property name="componentName" type="string">
+            <column name="component_name" length="45" />
+        </property>
+        <property name="isAdded" type="java.lang.Boolean">
+            <column name="is_added" />
+        </property>
+        <property name="isRemoved" type="java.lang.Boolean">
+            <column name="is_removed" />
+        </property>
+    </class>
+</hibernate-mapping>

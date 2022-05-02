@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.ring.db.QmQueueIcons" table="qm_queue_icons" catalog="nanobotz_ring" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="iconName" type="string">
+            <column name="icon_name" length="150" />
+        </property>
+        <property name="iconCode" type="string">
+            <column name="icon_code" length="150" />
+        </property>
+        <property name="iconCode2" type="string">
+            <column name="icon_code2" length="150" />
+        </property>
+    </class>
+</hibernate-mapping>

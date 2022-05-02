@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.ring.db.TmTickets" table="tm_tickets" catalog="nanobotz_ring" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="lmLocations" class="com.ring.db.LmLocations" fetch="select">
+            <column name="lm_locations_id" />
+        </many-to-one>
+        <many-to-one name="qmCategories" class="com.ring.db.QmCategories" fetch="select">
+            <column name="qm_categories_id" />
+        </many-to-one>
+        <many-to-one name="qmQueue" class="com.ring.db.QmQueue" fetch="select">
+            <column name="qm_queue_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="qmSubCategories" class="com.ring.db.QmSubCategories" fetch="select">
+            <column name="qm_sub_categories_id" />
+        </many-to-one>
+        <many-to-one name="umCustomer" class="com.ring.db.UmCustomer" fetch="select">
+            <column name="um_customer_id" />
+        </many-to-one>
+        <property name="ticketName" type="string">
+            <column name="ticket_name" length="250" />
+        </property>
+        <property name="ticketDescription" type="string">
+            <column name="ticket_description" length="65535" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="19" />
+        </property>
+        <property name="completedAt" type="timestamp">
+            <column name="completed_at" length="19" />
+        </property>
+        <property name="confirmedAt" type="timestamp">
+            <column name="confirmed_at" length="19" />
+        </property>
+        <property name="archivedAt" type="timestamp">
+            <column name="archived_at" length="19" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status">
+                <comment>1 - Pending 2 - Active 3 - Completed 4 - Confirmed 5 - Archive</comment>
+            </column>
+        </property>
+        <property name="remark1" type="string">
+            <column name="remark1" length="150" />
+        </property>
+        <property name="remark2" type="string">
+            <column name="remark2" length="150" />
+        </property>
+        <property name="createdBy" type="int">
+            <column name="created_by" not-null="true" />
+        </property>
+        <property name="updatedBy" type="int">
+            <column name="updated_by" not-null="true" />
+        </property>
+        <property name="completedBy" type="java.lang.Integer">
+            <column name="completed_by" />
+        </property>
+        <property name="confirmedBy" type="java.lang.Integer">
+            <column name="confirmed_by" />
+        </property>
+        <property name="archivedBy" type="java.lang.Integer">
+            <column name="archived_by" />
+        </property>
+        <property name="totalExpence" type="java.lang.Double">
+            <column name="total_expence" precision="22" scale="0" />
+        </property>
+        <property name="timeToComplete" type="java.lang.Long">
+            <column name="time_to_complete" />
+        </property>
+        <property name="timeToConfirm" type="java.lang.Long">
+            <column name="time_to_confirm" />
+        </property>
+        <property name="timeToArchive" type="java.lang.Long">
+            <column name="time_to_archive" />
+        </property>
+        <property name="tid" type="string">
+            <column name="tid" length="20" unique="true" />
+        </property>
+        <set name="tmTicketReplies" table="tm_ticket_reply" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tm_tickets_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.TmTicketReply" />
+        </set>
+        <set name="tmTicketMedias" table="tm_ticket_media" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tm_tickets_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.TmTicketMedia" />
+        </set>
+        <set name="tmTicketHasQueueHasQuestionHasAnswerses" table="tm_ticket_has_queue_has_question_has_answers" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tm_tickets_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.TmTicketHasQueueHasQuestionHasAnswers" />
+        </set>
+        <set name="tmTicketsHasUmUsers" table="tm_tickets_has_um_user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tm_tickets_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.TmTicketsHasUmUser" />
+        </set>
+    </class>
+</hibernate-mapping>

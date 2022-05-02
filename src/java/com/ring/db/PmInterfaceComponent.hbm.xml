@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.ring.db.PmInterfaceComponent" table="pm_interface_component" catalog="nanobotz_ring" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="pmInterface" class="com.ring.db.PmInterface" fetch="select">
+            <column name="pm_interfaces_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="umUserByCreatedBy" class="com.ring.db.UmUser" fetch="select">
+            <column name="created_by" not-null="true" />
+        </many-to-one>
+        <many-to-one name="umUserByUpdatedBy" class="com.ring.db.UmUser" fetch="select">
+            <column name="updated_by" not-null="true" />
+        </many-to-one>
+        <property name="componentName" type="string">
+            <column name="component_name" length="100" />
+        </property>
+        <property name="componentId" type="string">
+            <column name="component_id" length="100" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="19" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status" />
+        </property>
+        <property name="remark1" type="string">
+            <column name="remark1" length="150" />
+        </property>
+        <property name="remark2" type="string">
+            <column name="remark2" length="150" />
+        </property>
+        <set name="pmUserRoleHasInterfaceComponents" table="pm_user_role_has_interface_component" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pm_interface_component_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.PmUserRoleHasInterfaceComponent" />
+        </set>
+        <set name="umUserHasInterfaceComponents" table="um_user_has_interface_component" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pm_interface_component_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.UmUserHasInterfaceComponent" />
+        </set>
+        <set name="pmInterfaceComponentHistories" table="pm_interface_component_history" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="pm_interface_components_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.PmInterfaceComponentHistory" />
+        </set>
+    </class>
+</hibernate-mapping>

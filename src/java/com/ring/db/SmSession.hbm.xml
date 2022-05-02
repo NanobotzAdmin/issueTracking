@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.ring.db.SmSession" table="sm_session" catalog="nanobotz_ring" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="umUser" class="com.ring.db.UmUser" fetch="select">
+            <column name="um_user_id" not-null="true" />
+        </many-to-one>
+        <property name="ipAddress" type="string">
+            <column name="ip_address" length="45" />
+        </property>
+        <property name="timeIn" type="timestamp">
+            <column name="time_in" length="19" />
+        </property>
+        <property name="timeOut" type="timestamp">
+            <column name="time_out" length="19" />
+        </property>
+        <property name="isActive" type="java.lang.Boolean">
+            <column name="is_active" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="19" />
+        </property>
+        <set name="smSessionActivities" table="sm_session_activity" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sm_session_id" not-null="true" />
+            </key>
+            <one-to-many class="com.ring.db.SmSessionActivity" />
+        </set>
+    </class>
+</hibernate-mapping>
