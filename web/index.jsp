@@ -49,7 +49,7 @@
     </head>
     <body class='pace-top'>
         <!-- BEGIN page-cover -->
-        <div class="app-cover"></div>
+        <!--<div class="app-cover"></div>-->
         <!-- END page-cover -->
 
         <!-- BEGIN #loader -->
@@ -64,10 +64,10 @@
             <!-- BEGIN login -->
             <div class="login login-v2 fw-bold">
                 <!-- BEGIN login-cover -->
-                <div class="login-cover">
+<!--                <div class="login-cover">
                     <div class="login-cover-img" style="background-image: url(assets/img/login-bg/login-bg-19.jpg)" data-id="login-cover-image"></div>
                     <div class="login-cover-bg"></div>
-                </div>
+                </div>-->
                 <!-- END login-cover -->
 
                 <!-- BEGIN login-container -->
@@ -104,7 +104,7 @@
                                                             </label>
                                                         </div>-->
                             <div class="mb-20px" id="lOGINDIV">
-                                <input type="button" class="btn btn-info d-block w-100 h-45px btn-lg" onclick="userLogin()" value="Sign me in">
+                                <input type="button" class="btn btn-warning d-block w-100 h-45px btn-lg" onclick="userLogin()" value="Sign me in">
                             </div>
 <!--                            <div class="text-gray-500">
                                 Not a member yet? Click <a href="javascript:;" class="text-white">here</a> to register.
@@ -118,14 +118,14 @@
             <!-- END login -->
 
             <!-- BEGIN login-bg -->
-            <div class="login-bg-list clearfix">
+<!--            <div class="login-bg-list clearfix">
                 <div class="login-bg-list-item active"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-19.jpg" style="background-image: url(assets/img/login-bg/login-bg-19.jpg)"></a></div>
                 <div class="login-bg-list-item"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-16.jpg" style="background-image: url(assets/img/login-bg/login-bg-16.jpg)"></a></div>
                 <div class="login-bg-list-item"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-15.jpg" style="background-image: url(assets/img/login-bg/login-bg-15.jpg)"></a></div>
                 <div class="login-bg-list-item"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-14.jpg" style="background-image: url(assets/img/login-bg/login-bg-14.jpg)"></a></div>
                 <div class="login-bg-list-item"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-13.jpg" style="background-image: url(assets/img/login-bg/login-bg-13.jpg)"></a></div>
                 <div class="login-bg-list-item"><a href="javascript:;" class="login-bg-list-link" data-toggle="login-change-bg" data-img="assets/img/login-bg/login-bg-12.jpg" style="background-image: url(assets/img/login-bg/login-bg-12.jpg)"></a></div>
-            </div>
+            </div>-->
             <!-- END login-bg -->
 
 
