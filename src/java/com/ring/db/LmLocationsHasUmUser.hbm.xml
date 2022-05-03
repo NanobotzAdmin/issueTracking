@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 24, 2022 1:49:23 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.ring.db.LmLocationsHasUmUser" table="lm_locations_has_um_user" catalog="nanobotz_ring" optimistic-lock="version">
+    <class name="com.ring.db.LmLocationsHasUmUser" table="lm_locations_has_um_user" catalog="nanobotz_issue_tracking" optimistic-lock="version">
         <composite-id name="id" class="com.ring.db.LmLocationsHasUmUserId">
             <key-property name="lmLocationsId" type="int">
                 <column name="lm_locations_id" />

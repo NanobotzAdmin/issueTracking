@@ -238,8 +238,8 @@ public class TMS_TM_Tickets {
                     + "    , tm_tickets.created_by\n"
                     + "    , tm_tickets_has_um_user.um_user_id\n"
                     + "FROM\n"
-                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
                     + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
                     + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "' AND tm_tickets.created_at BETWEEN '" + startDateStr + "' AND '" + endDateStr + "')GROUP BY tm_tickets.id;";
 //            System.out.println(" final qu = " + query);
@@ -273,8 +273,8 @@ public class TMS_TM_Tickets {
                     + "    , tm_tickets.created_by\n"
                     + "    , tm_tickets_has_um_user.um_user_id\n"
                     + "FROM\n"
-                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
                     + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
                     + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "' AND tm_tickets.created_at BETWEEN '" + startDateStr + "' AND '" + endDateStr + "') AND (tm_tickets.status='" + status + "' OR tm_tickets.status='" + status2 + "' OR tm_tickets.status='" + status3 + "')GROUP BY tm_tickets.id;";
 //            System.out.println(" final qu = " + query);
@@ -298,8 +298,8 @@ public class TMS_TM_Tickets {
                     + "    , tm_tickets.created_by\n"
                     + "    , tm_tickets_has_um_user.um_user_id\n"
                     + "FROM\n"
-                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
                     + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
                     + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "')";
             if (queueId > 0) {
@@ -334,8 +334,8 @@ public class TMS_TM_Tickets {
 //                    + "    , tm_tickets_has_um_user.um_user_id\n"
 //                    + " , SUM(`tm_tickets`.`total_expence`)\n"
 //                    + "FROM\n"
-//                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-//                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+//                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+//                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
 //                    + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
 //                    + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "')";
 //            if (queueId > 0) {
@@ -375,8 +375,8 @@ public class TMS_TM_Tickets {
                     + "    , tm_tickets.created_by\n"
                     + "    , tm_tickets_has_um_user.um_user_id\n"
                     + "FROM\n"
-                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
                     + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
                     + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "')";
             if (queueId > 0) {
@@ -413,8 +413,8 @@ public class TMS_TM_Tickets {
                     + "    , tm_tickets.created_by\n"
                     + "    , tm_tickets_has_um_user.um_user_id\n"
                     + "FROM\n"
-                    + "    nanobotz_ring.tm_tickets_has_um_user\n"
-                    + "    INNER JOIN nanobotz_ring.tm_tickets \n"
+                    + "    nanobotz_issue_tracking.tm_tickets_has_um_user\n"
+                    + "    INNER JOIN nanobotz_issue_tracking.tm_tickets \n"
                     + "        ON (tm_tickets_has_um_user.tm_tickets_id = tm_tickets.id)\n"
                     + "WHERE (tm_tickets.created_by='" + userId + "' OR tm_tickets_has_um_user.um_user_id='" + userId + "') AND (tm_tickets.status='" + status + "' OR tm_tickets.status='" + status2 + "' OR tm_tickets.status='" + status3 + "')";
             if (queueId > 0) {
@@ -445,8 +445,8 @@ public class TMS_TM_Tickets {
                     + "    , `tm_tickets_has_um_user`.`tm_tickets_id`\n"
                     + "    , `tm_tickets_has_um_user`.`um_user_id`\n"
                     + "FROM\n"
-                    + "    `nanobotz_ring`.`tm_tickets_has_um_user`\n"
-                    + "    INNER JOIN `nanobotz_ring`.`tm_tickets` \n"
+                    + "    `nanobotz_issue_tracking`.`tm_tickets_has_um_user`\n"
+                    + "    INNER JOIN `nanobotz_issue_tracking`.`tm_tickets` \n"
                     + "        ON (`tm_tickets_has_um_user`.`tm_tickets_id` = `tm_tickets`.`id`)\n"
                     + "WHERE (`tm_tickets`.`status` ='" + status + "'\n"
                     + "    AND `tm_tickets_has_um_user`.`um_user_id` ='" + userId + "')";
@@ -469,8 +469,8 @@ public class TMS_TM_Tickets {
                     + "    , `tm_tickets_has_um_user`.`tm_tickets_id`\n"
                     + "    , `tm_tickets_has_um_user`.`um_user_id`\n"
                     + "FROM\n"
-                    + "    `nanobotz_ring`.`tm_tickets_has_um_user`\n"
-                    + "    INNER JOIN `nanobotz_ring`.`tm_tickets` \n"
+                    + "    `nanobotz_issue_tracking`.`tm_tickets_has_um_user`\n"
+                    + "    INNER JOIN `nanobotz_issue_tracking`.`tm_tickets` \n"
                     + "        ON (`tm_tickets_has_um_user`.`tm_tickets_id` = `tm_tickets`.`id`)\n"
                     + "WHERE (`tm_tickets`.`status` ='" + status + "'\n"
                     + "OR `tm_tickets`.`status` ='" + status2 + "'\n"
