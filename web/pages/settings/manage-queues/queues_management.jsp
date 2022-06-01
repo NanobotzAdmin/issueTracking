@@ -4,26 +4,26 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.QmQueueHasCategories"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.QmQueueHasCategories"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategories"%>
-<%@page import="com.ring.db.QmCategories"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.QmSubCategories"%>
+<%@page import="com.it.db.QmCategories"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -35,12 +35,12 @@
 %>
 
 <%
-    List<PmInterfaceComponent> getComponentByIterfaceId = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
+    List<PmInterfaceComponent> getComponentByIterfaceId = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
     boolean queuesManagementMain = false;
 
     if (!getComponentByIterfaceId.isEmpty()) {
         for (PmInterfaceComponent cmpt : getComponentByIterfaceId) {
-            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
+            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
             if (getUserHasComponentByUserAndComponentId != null) {
                 if (getUserHasComponentByUserAndComponentId.getPmInterfaceComponent().getComponentId().equals("QUEUESMAINCOMPONENT")) {
                     queuesManagementMain = true;
@@ -94,7 +94,7 @@
                                         <tbody>
                                             <%
                                                 int qu = 0;
-                                                List<QmQueue> loadAllQueues = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<QmQueue> loadAllQueues = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMALL);
 //                                                System.out.println("li size = " + loadAllQueues.size());
                                                 if (!loadAllQueues.isEmpty()) {
                                                     for (QmQueue elem : loadAllQueues) {
@@ -105,7 +105,7 @@
                                                 <td><%=elem.getQueueName()%></td>
                                                 <td>
                                                     <%
-                                                        List<QmCategories> loadAllCategoriesByqueue = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, elem.getId());
+                                                        List<QmCategories> loadAllCategoriesByqueue = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, elem.getId());
                                                         if (!loadAllCategoriesByqueue.isEmpty()) {
                                                             for (QmCategories cat : loadAllCategoriesByqueue) {
                                                     %>
@@ -124,9 +124,9 @@
                                                     <%}%>
 
                                                     <%
-                                                        List<QmCategories> checkQueueHasCategories = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, elem.getId());
-                                                        List<QmQueueHasUser> checkQueueHasUsers = new com.ring.queueManagementModel.QMS_QM_Queue_Has_User().getAllUsersByLocationId(ses, elem.getId());
-                                                        List<TmTickets> checkQueueHasTicktes = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueId(ses, elem.getId());
+                                                        List<QmCategories> checkQueueHasCategories = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, elem.getId());
+                                                        List<QmQueueHasUser> checkQueueHasUsers = new com.it.queueManagementModel.QMS_QM_Queue_Has_User().getAllUsersByLocationId(ses, elem.getId());
+                                                        List<TmTickets> checkQueueHasTicktes = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueId(ses, elem.getId());
                                                         if (checkQueueHasCategories.isEmpty() && checkQueueHasUsers.isEmpty() && checkQueueHasTicktes.isEmpty()) {
                                                     %>
                                                     <div id="QUEDLTBTNDIV<%=elem.getId()%>"><button type="button" class="btn btn-outline-white btn-xs" onclick="deleteQueue(<%=elem.getId()%>, )">Delete Queue</button></div>
@@ -184,7 +184,7 @@
                                         <tbody>
                                             <%
                                                 int cat = 0;
-                                                List<QmCategories> loadAllCategories = new com.ring.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<QmCategories> loadAllCategories = new com.it.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                 if (!loadAllCategories.isEmpty()) {
                                                     for (QmCategories elemCat : loadAllCategories) {
                                                         cat++;
@@ -250,7 +250,7 @@
                                         <tbody>
                                             <%
                                                 int subCat = 0;
-                                                List<QmSubCategories> loadAllSubCategories = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<QmSubCategories> loadAllSubCategories = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                 if (!loadAllSubCategories.isEmpty()) {
                                                     for (QmSubCategories elemSubCat : loadAllSubCategories) {
                                                         subCat++;

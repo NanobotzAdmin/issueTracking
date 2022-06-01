@@ -4,7 +4,7 @@
     Author     : buddh
 --%>
 
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -14,7 +14,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());

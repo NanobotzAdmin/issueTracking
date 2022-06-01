@@ -6,18 +6,18 @@
 
 <%@page import="org.json.JSONArray"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.ring.db.LmLocations"%>
+<%@page import="com.it.db.LmLocations"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.db.UmCustomer"%>
-<%@page import="com.ring.db.QmSubCategories"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.db.UmCustomer"%>
+<%@page import="com.it.db.QmSubCategories"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.QmCategories"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.QmCategories"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,14 +29,14 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
         UmUser logedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getSession().getAttribute("nowLoginUser").toString()));
         try {
             JSONArray jArray = new JSONArray();
-            List<UmUser> allusr = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatusAndAsc(ses, STATIC_DATA_MODEL.PMACTIVE);
+            List<UmUser> allusr = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatusAndAsc(ses, STATIC_DATA_MODEL.PMACTIVE);
             if (!allusr.isEmpty()) {
                 for (UmUser elem : allusr) {
                     jArray.put(elem.getFirstName() + " " + elem.getLastName());
@@ -58,7 +58,7 @@
             }
             QmQueue selectedQueueFT = (QmQueue) ses.load(QmQueue.class, quIdToNewTicket);
             if (selectedQueueFT != null) {
-                String tickKey = new com.ring.configurationModel.KEY_GENERATOR().generateKey(6);
+                String tickKey = new com.it.configurationModel.KEY_GENERATOR().generateKey(6);
                 Calendar c = Calendar.getInstance();
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH) + 1;
@@ -69,7 +69,7 @@
 <!--start new ticket--> 
 <div class="row">
     <div class="col-sm-12">
-        <h1 class="page-header"> New Ticket  &nbsp;&nbsp; <small style="font-size: 15px"> <%=finalKey%> </small> &nbsp;&nbsp;
+        <h1 class="page-header"> New Issue  &nbsp;&nbsp; <small style="font-size: 15px"> <%=finalKey%> </small> &nbsp;&nbsp;
             <div class="avatars">
                 <span class="avatar">
                     <img src="${pageContext.request.contextPath}/ImageServlet/<%=logedUser.getRemark1()%>" class=" rounded-pill" />
@@ -91,7 +91,7 @@
                         <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
                             <input type="hidden" id="ticketKey" name="ticketKey" value="<%=finalKey%>" >
                             <div class="form-group mb-3">
-                                <label>Ticket Title</label>
+                                <label>Issue Title</label>
                                 <input type="hidden" class="form-control" id="queueIdToTicket" name="queueIdToTicket" value="<%=quIdToNewTicket%>">
                                 <input type="text" class="form-control" id="ticketName" name="ticketName">
                             </div>
@@ -105,7 +105,7 @@
                                     <%} else {%>
                                     <option value="0" selected="">-- Select One --</option>
                                     <%}%>
-                                    <%                            List<QmCategories> loadCategoryForNewTickets = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, quIdToNewTicket);
+                                    <%                            List<QmCategories> loadCategoryForNewTickets = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, quIdToNewTicket);
                                         if (!loadCategoryForNewTickets.isEmpty()) {
                                             for (QmCategories catByQueueToNewTicket : loadCategoryForNewTickets) {
                                     %>
@@ -124,11 +124,11 @@
                                     <%} else if (selectedCategory != null) {%>
                                     <%
                                         if (selectedCategory != null) {
-                                            List<QmSubCategories> subCatByCat = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, selectedCategory.getId());
+                                            List<QmSubCategories> subCatByCat = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, selectedCategory.getId());
                                             if (!subCatByCat.isEmpty()) {
                                                 for (QmSubCategories sCat : subCatByCat) {
 //                                                    if (sCat.getId() != selectedSubCategory.getId()) {
-                                    %>
+%>
                                     <option value="<%=sCat.getId()%>" selected=""><%=sCat.getSubCategoryName()%></option>
                                     <%
                                         }
@@ -144,10 +144,10 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label>Location</label>
-                                <select class=" default-select2" style="width: 100%" id="loadLocationForNewTicket" name="loadLocationForNewTicket" onchange="loadUsersByLocation(this.value)">
+                                <select class=" default-select2" style="width: 100%" id="loadLocationForNewTicket" name="loadLocationForNewTicket">
                                     <option value="0" selected="">-- Select Location --</option>
                                     <%
-                                        List<LmLocations> loadLocationForNewTickets = new com.ring.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
+                                        List<LmLocations> loadLocationForNewTickets = new com.it.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
                                         if (!loadLocationForNewTickets.isEmpty()) {
                                             for (LmLocations locations : loadLocationForNewTickets) {
                                     %>
@@ -156,26 +156,27 @@
                                         }%>
                                 </select>
                             </div>
-                            <%
-                                //                                check log user is in selected queu
-                                QmQueueHasUser checkLogedUserInQueue = new com.ring.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, quIdToNewTicket, logedUser.getId());
-                                if (checkLogedUserInQueue != null) {
-                            %>
-                            <input type="hidden" id="checkUserInQueue" value="1">
-                            <%} else {%>
-                            <input type="hidden" id="checkUserInQueue" value="0">
-                            <%}%>
+                            <%--     
+                             <%
+                                 //                                check log user is in selected queu
+                                 QmQueueHasUser checkLogedUserInQueue = new com.it.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, quIdToNewTicket, logedUser.getId());
+                                 if (checkLogedUserInQueue != null) {
+                             %>
+                             <input type="hidden" id="checkUserInQueue" value="1">
+                             <%} else {%>
+                             <input type="hidden" id="checkUserInQueue" value="0">
+                             <%}%>
 
                             <%
                                 if (checkLogedUserInQueue != null) {
                             %>
-
+                            --%>
 
 
 
                             <!--CCCCCC-->
                             <div class="mb-3">
-                                <label class="form-label"<span class="fa fa-plus"></span>&nbsp;&nbsp;Add User to Ticket</label><br>
+                                <label class="form-label"<span class="fa fa-plus"></span>&nbsp;&nbsp;Add User to Issue</label><br>
                                 <!--<div id="myDIVQ" style="display: none">-->
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -183,7 +184,7 @@
                                         <select class="default-select2" style="color: #fff" id="userToTicket">
                                             <option selected="" value="0" style="color: #000">-- Select User --</option>
                                             <%
-                                                List<UmUser> loadUsersToTicket = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                List<UmUser> loadUsersToTicket = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                 if (!loadUsersToTicket.isEmpty()) {
                                                     for (UmUser elemT : loadUsersToTicket) {
                                             %>
@@ -212,12 +213,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td hidden=""><%=logedUser.getId()%></td>
-                                                <td><%=logedUser.getFirstName()%> <%=logedUser.getLastName()%></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            <%--                                            <tr>
+                                                                                            <td hidden=""><%=logedUser.getId()%></td>
+                                                                                            <td><%=logedUser.getFirstName()%> <%=logedUser.getLastName()%></td>
+                                                                                            <td></td>
+                                                                                            <td></td>
+                                                                                        </tr>--%>
                                         </tbody>
                                     </table>
                                 </div>
@@ -228,9 +229,9 @@
 
 
 
-                            <%}%>
+                            <%--<%}%>--%>
 
-                            <div class="form-group mb-3">
+                            <div hidden="" class="form-group mb-3">
                                 <input class="mb-2" type="checkbox" id="attachCustomerCheckbox" onClick="toggleCustomer()"/> Customer Related Issue
                                 <div id="attachCustomer" class="hideDiv">
                                     <div class="row">
@@ -238,7 +239,7 @@
                                             <select class="default-select2" id="customerForTicket" name="customerForTicket">
                                                 <option value="0" selected="">--Select Customer--</option>
                                                 <%
-                                                    List<UmCustomer> loadCustomersToTicket = new com.ring.customerManagementModel.CMS_UM_Customer().getAllCustomersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                    List<UmCustomer> loadCustomersToTicket = new com.it.customerManagementModel.CMS_UM_Customer().getAllCustomersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                     if (!loadCustomersToTicket.isEmpty()) {
                                                         for (UmCustomer cus : loadCustomersToTicket) {
                                                 %>
@@ -270,7 +271,7 @@
                                 </div>
                                 <label class="form-label col-form-label col-md-5"></label>
                                 <div class="col-md-3" id="ADDTCKDIV">
-                                    <button type="button" class="btn btn-green" style="width: 100%" onclick="addTicket()">Create Ticket</button>
+                                    <button type="button" class="btn btn-green" style="width: 100%" onclick="addTicket()">Create Issue</button>
                                 </div>
                             </div>
                         </form>
@@ -376,7 +377,6 @@
 
 
 <script type="text/javascript">
-
     $(".default-select2").select2();
     $(".summernote").summernote({
         height: "150",
@@ -389,23 +389,17 @@
             ['height', ['height']]
         ]
     });
-
-
-
     function toggleCustomer() {
         var checkBox = document.getElementById("attachCustomerCheckbox");
         console.log(checkBox);
-
         let divElement = document.getElementById("attachCustomer");
         console.log(divElement);
-
         divElement.classList.toggle('hideDiv');
     }
-
     $(".summernote").summernote({
         height: "150",
         color: "#000000",
-          hint: {
+        hint: {
             mentions: <%=jArray%>,
             match: /\B@(\w*)$/,
             search: function (keyword, callback) {
@@ -434,7 +428,6 @@
 //            }
 //        }
 //    });
-
     function loadSubCategoryByCategoryForNewTicket(catIdNewTicket) {
         $.ajax({
             url: "pages/settings/manage-ticketFlow/ajax_ticket_flow_management_new_ticket_details_load_Sub_category_by_category_id.jsp",
@@ -449,21 +442,20 @@
             }
         });
     }
-    function loadUsersByLocation(locationId) {
-        $.ajax({
-            url: "pages/settings/manage-ticketFlow/ajax_ticket_flow_management_new_ticket_details_load_users_by_location_id.jsp",
-            type: "POST",
-            data: "interfaceId=" + <%=interfaceId%> + "&locationId=" + locationId,
-            beforeSend: function (xhr) {
-            },
-            complete: function () {
-            },
-            success: function (data) {
-                $('#USRDIV').html(data);
-            }
-        });
-    }
-
+//    function loadUsersByLocation(locationId) {
+//        $.ajax({
+//            url: "pages/settings/manage-ticketFlow/ajax_ticket_flow_management_new_ticket_details_load_users_by_location_id.jsp",
+//            type: "POST",
+//            data: "interfaceId=" + <%=interfaceId%> + "&locationId=" + locationId,
+//            beforeSend: function (xhr) {
+//            },
+//            complete: function () {
+//            },
+//            success: function (data) {
+//                $('#USRDIV').html(data);
+//            }
+//        });
+//    }
     //    function for add users to ticket table
     function addUserDetailsToTableTicket() {
         if ($('#userToTicket option:selected').val() === "0") {
@@ -497,7 +489,6 @@
             }
         }
     }
-
     //    function for add new Ticket
     function addTicket() {
 //        var ticketKey = $("#ticketKey").val();
@@ -530,79 +521,77 @@
             data.append("encodedString", encodedString);
             // disabled the submit button
 //        $("#btnSubmit").prop("disabled", true);
-            var checkUserInQueue = $("#checkUserInQueue").val();
+//            var checkUserInQueue = $("#checkUserInQueue").val();
             var ac = {AC: []};
-            if (checkUserInQueue === "1") {
-                var tb1 = document.getElementById('addUserToTicket');
-                var rowCount = tb1.rows.length;
-                var newRows = 0;
-                var go = 0;
-                for (var t = 1; t < rowCount; t++) {
-                    var userId = document.getElementById("addUserToTicket").rows[t].cells[0].innerText;
-                    if (userId === "" || userId === "0") {
-                    } else {
-                        go++;
-                        ac.AC.push({"userId": userId});
-                        newRows++;
-                    }
+//            if (checkUserInQueue === "1") {
+            var tb1 = document.getElementById('addUserToTicket');
+            var rowCount = tb1.rows.length;
+            var newRows = 0;
+            var go = 0;
+            for (var t = 1; t < rowCount; t++) {
+                var userId = document.getElementById("addUserToTicket").rows[t].cells[0].innerText;
+                if (userId === "" || userId === "0") {
+                } else {
+                    go++;
+                    ac.AC.push({"userId": userId});
+                    newRows++;
                 }
             }
-            var usersDetails = JSON.stringify(ac);
-
-            data.append("usersDetails", usersDetails);
-
-
-
-            $.ajax({
-                type: "POST",
+//            }
+            if (go > 0) {
+                var usersDetails = JSON.stringify(ac);
+                data.append("usersDetails", usersDetails);
+                $.ajax({
+                    type: "POST",
 //                enctype: 'multipart/form-data',
-                url: "ticketManagement_addTicket",
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-                beforeSend: function (xhr) {
-                    $('#ADDTCKDIV').empty();
-                    $('#ADDTCKDIV').html("<img src='assets/img/Wedges.gif' class='pull-right' style='width: 24px; height: 24px;'>");
-                },
-                success: function (data) {
-                    var resultValue = JSON.parse(data);
-                    if (resultValue.result === "0") {
-                        swal("", resultValue.displayMessage, "error");
+                    url: "ticketManagement_addTicket",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    beforeSend: function (xhr) {
                         $('#ADDTCKDIV').empty();
-                        $('#ADDTCKDIV').html("<button type='button' class='btn btn-green' style='width: 100%' onclick='addTicket()'>Create Ticket</button>");
-                    } else if (resultValue.result === "2") {
-                        swal("", resultValue.displayMessage, "error");
-                        setTimeout(function () {
-                            window.location.href = "../../../index.jsp";
-                        }, 2000);
-                    } else if (resultValue.result === "1") {
-                        var message = resultValue.displayMessage;
+                        $('#ADDTCKDIV').html("<img src='assets/img/Wedges.gif' class='pull-right' style='width: 24px; height: 24px;'>");
+                    },
+                    success: function (data) {
+                        var resultValue = JSON.parse(data);
+                        if (resultValue.result === "0") {
+                            swal("", resultValue.displayMessage, "error");
+                            $('#ADDTCKDIV').empty();
+                            $('#ADDTCKDIV').html("<button type='button' class='btn btn-green' style='width: 100%' onclick='addTicket()'>Create Ticket</button>");
+                        } else if (resultValue.result === "2") {
+                            swal("", resultValue.displayMessage, "error");
+                            setTimeout(function () {
+                                window.location.href = "../../../index.jsp";
+                            }, 2000);
+                        } else if (resultValue.result === "1") {
+                            var message = resultValue.displayMessage;
 //                        var splitMessage = message.split("|");
 //                        var ticketId = splitMessage[1];
 //                          var resultMessage = splitMessage[0];
 //                        alert(ticketId);
 //                        addUsersToTicket(ticketId);
-                        loadTicketPage('pages/settings/manage-ticketFlow/ticketFlow_management.jsp', 7,<%=quIdToNewTicket%>,<%=catForTicket%>,<%=subForTicket%>, '${pageContext.request.contextPath}/ImageServlet/<%=selectedQueueFT.getBackgroundImage()%>')
-                                                swal({
-                                                    title: "Done",
-                                                    text: resultValue.displayMessage,
-                                                    timer: 1000,
-                                                    showConfirmButton: false
-                                                });
-                                            }
-
-                                        },
-                                        error: function (e) {
-                                            $("#result").text(e.responseText);
-                                            console.log("ERROR : ", e);
-                                            $("#btnSubmit").prop("disabled", false);
+                            loadTicketPage('pages/settings/manage-ticketFlow/ticketFlow_management.jsp', 7,<%=quIdToNewTicket%>,<%=catForTicket%>,<%=subForTicket%>, '${pageContext.request.contextPath}/ImageServlet/<%=selectedQueueFT.getBackgroundImage()%>')
+                                                        swal({
+                                                            title: "Done",
+                                                            text: resultValue.displayMessage,
+                                                            timer: 1000,
+                                                            showConfirmButton: false
+                                                        });
+                                                    }
+                                                },
+                                                error: function (e) {
+                                                    $("#result").text(e.responseText);
+                                                    console.log("ERROR : ", e);
+                                                    $("#btnSubmit").prop("disabled", false);
+                                                }
+                                            });
+                                        } else {
+                                            swal("", "Select User", "warning");
                                         }
-                                    });
+                                    }
                                 }
-                            }
-
 //    function addUsersToTicket(ticketId) {
 //        var checkUserInQueue = $("#checkUserInQueue").val();
 //        var ac = {AC: []};
@@ -656,50 +645,49 @@
 //                            });
 //
 //                        }
+                                //      function for send otp
+                                function sendOTP2() {
+                                    var mobile = $("#mobile").val();
+                                    if (mobile === "") {
+                                        swal("", "Enter Mobile Number", "warning");
+                                    } else {
+                                        $.ajax({
+                                            url: "customerManagement_sendOTP",
+                                            type: "POST",
+                                            data: "mobile=" + mobile,
+                                            beforeSend: function (xhr) {
+                                                $('#SNDOTPBTN').empty();
+                                                $('#SNDOTPBTN').html("<img src='assets/img/Wedges.gif' class='pull-right' style='width: 24px; height: 24px;'>");
+                                            },
+                                            success: function (data) {
+                                                var resultValue = JSON.parse(data);
+                                                if (resultValue.result === "0") {
+                                                    swal("", resultValue.displayMessage, "error");
+                                                } else if (resultValue.result === "2") {
+                                                    swal("", resultValue.displayMessage, "error");
+                                                    setTimeout(function () {
+                                                        window.location.href = "../../../index.jsp";
+                                                    }, 2000);
+                                                } else if (resultValue.result === "1") {
 
-                            //      function for send otp
-                            function sendOTP2() {
-                                var mobile = $("#mobile").val();
-                                if (mobile === "") {
-                                    swal("", "Enter Mobile Number", "warning");
-                                } else {
-                                    $.ajax({
-                                        url: "customerManagement_sendOTP",
-                                        type: "POST",
-                                        data: "mobile=" + mobile,
-                                        beforeSend: function (xhr) {
-                                            $('#SNDOTPBTN').empty();
-                                            $('#SNDOTPBTN').html("<img src='assets/img/Wedges.gif' class='pull-right' style='width: 24px; height: 24px;'>");
-                                        },
-                                        success: function (data) {
-                                            var resultValue = JSON.parse(data);
-                                            if (resultValue.result === "0") {
-                                                swal("", resultValue.displayMessage, "error");
-                                            } else if (resultValue.result === "2") {
-                                                swal("", resultValue.displayMessage, "error");
-                                                setTimeout(function () {
-                                                    window.location.href = "../../../index.jsp";
-                                                }, 2000);
-                                            } else if (resultValue.result === "1") {
-
-                                                document.getElementById("SNDOTPDIV").style.display = "none";
-                                                document.getElementById("RESNDOTPDIV").style.display = "block";
-                                                document.getElementById("OTPVRFDIV").style.display = "block";
-                                                swal({
-                                                    title: "Done",
-                                                    text: resultValue.displayMessage,
-                                                    timer: 1000,
-                                                    showConfirmButton: false
-                                                });
+                                                    document.getElementById("SNDOTPDIV").style.display = "none";
+                                                    document.getElementById("RESNDOTPDIV").style.display = "block";
+                                                    document.getElementById("OTPVRFDIV").style.display = "block";
+                                                    swal({
+                                                        title: "Done",
+                                                        text: resultValue.displayMessage,
+                                                        timer: 1000,
+                                                        showConfirmButton: false
+                                                    });
+                                                }
+                                                $('#SNDOTPBTN').empty();
+                                                $('#SNDOTPBTN').html("<button type='button' class='btn btn-primary' onclick='sendOTP2()'>Send OTP</button>");
+                                            },
+                                            error: function (error) {
                                             }
-                                            $('#SNDOTPBTN').empty();
-                                            $('#SNDOTPBTN').html("<button type='button' class='btn btn-primary' onclick='sendOTP2()'>Send OTP</button>");
-                                        },
-                                        error: function (error) {
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
-                            }
 ////      function for verify otp
 //                        function verifyOTP2() {
 //                            var typedOtp = $("#otpCode").val();
@@ -817,8 +805,6 @@
 //                                });
 //                            }
 //                        }
-
-
 </script>
 
 

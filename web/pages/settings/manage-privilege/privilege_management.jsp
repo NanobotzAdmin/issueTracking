@@ -4,20 +4,20 @@
     Author     : buddh
 --%>
 
-<%@page import="com.ring.db.PmInterfaceTopic"%>
-<%@page import="com.ring.db.PmUserRole"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceTopic"%>
+<%@page import="com.it.db.PmUserRole"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Logger logger = Logger.getLogger(this.getClass().getName());
         UmUser logedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getSession().getAttribute("nowLoginUser").toString()));
         String gg = (request.getParameter("pageUrl"));
@@ -30,14 +30,14 @@
 <!-- END page-header -->
 <br>
 <%
-    List<PmInterfaceComponent> getComponentByIterfaceId = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
+    List<PmInterfaceComponent> getComponentByIterfaceId = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
     boolean privilegeManagementMain = false;
     boolean privilegeManagementUserRole = false;
     boolean privilegeManagementUser = false;
 
     if (!getComponentByIterfaceId.isEmpty()) {
         for (PmInterfaceComponent cmpt : getComponentByIterfaceId) {
-            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
+            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
             if (getUserHasComponentByUserAndComponentId != null) {
                 if (getUserHasComponentByUserAndComponentId.getPmInterfaceComponent().getComponentId().equals("USERPERMISSIONMAINCOMPONENT")) {
                     privilegeManagementMain = true;
@@ -86,7 +86,7 @@
                                     <select class="default-select2 form-control" style="color: #000" id="userRole" name="userRole" onchange="changeTopics()">
                                         <option selected="" disabled=""  value="0">-- Select User Role --</option>  
                                         <% // $$                                                              
-                                            List<PmUserRole> loadAllUserRole = new com.ring.privilegeManagementModel.PMS_PM_User_Role().getAllActiveUserRoles(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                            List<PmUserRole> loadAllUserRole = new com.it.privilegeManagementModel.PMS_PM_User_Role().getAllActiveUserRoles(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if (!loadAllUserRole.isEmpty()) {
                                                 for (PmUserRole allUserRoles : loadAllUserRole) {
                                         %>
@@ -103,7 +103,7 @@
                                     <select class="default-select2 form-control" style="color: #000" id="interfaceTopic" name="interfaceTopic" onchange="loadInterfaceByInterfaceTopic(this.value, 'H')">
                                         <option selected="" disabled="" value="0">-- Select Interface Topic --</option>  
                                         <% //$$
-                                            List<PmInterfaceTopic> loadAllinterfaceTopics = new com.ring.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                            List<PmInterfaceTopic> loadAllinterfaceTopics = new com.it.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if (!loadAllinterfaceTopics.isEmpty()) {
                                                 for (PmInterfaceTopic allInterfaceTopics : loadAllinterfaceTopics) {
                                         %>
@@ -153,7 +153,7 @@
                                     <select class="default-select2 form-control" style="color: #000" id="userRoleForUser" name="userRoleForUser" onchange="loadUsersbyRoleIdForUsers()">
                                         <option selected="" disabled="" value="0">-- Select User Role --</option>  
                                         <% // $$                                                              
-                                            List<PmUserRole> loadAllUserRoleForUser = new com.ring.privilegeManagementModel.PMS_PM_User_Role().getAllActiveUserRoles(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                            List<PmUserRole> loadAllUserRoleForUser = new com.it.privilegeManagementModel.PMS_PM_User_Role().getAllActiveUserRoles(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if (!loadAllUserRoleForUser.isEmpty()) {
                                                 for (PmUserRole allUserRolesUser : loadAllUserRoleForUser) {
                                         %>
@@ -179,7 +179,7 @@
                                     <select class="default-select2 form-control" style="color: #000" id="interfaceTopicForUser" name="interfaceTopicForUser" onchange="loadInterfaceByInterfaceTopicForUser(this.value,'H')">
                                         <option selected="" value="0">-- Select Interface Topic --</option>  
                                         <% //$$
-                                            List<PmInterfaceTopic> loadAllinterfaceTopicsForUser = new com.ring.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                            List<PmInterfaceTopic> loadAllinterfaceTopicsForUser = new com.it.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if (!loadAllinterfaceTopicsForUser.isEmpty()) {
                                                 for (PmInterfaceTopic allInterfaceTopicsUser : loadAllinterfaceTopicsForUser) {
                                         %>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2022 9:18:18 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.it.db.TmTicketReply" table="tm_ticket_reply" catalog="nanobotz_issue_tracking" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tmTickets" class="com.it.db.TmTickets" fetch="select">
+            <column name="tm_tickets_id" not-null="true" />
+        </many-to-one>
+        <property name="replyDescription" type="string">
+            <column name="reply_description" length="65535" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="19" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status" />
+        </property>
+        <property name="remark1" type="string">
+            <column name="remark1" length="150" />
+        </property>
+        <property name="remark2" type="string">
+            <column name="remark2" length="150" />
+        </property>
+        <property name="createdBy" type="int">
+            <column name="created_by" not-null="true" />
+        </property>
+        <property name="updatedBy" type="int">
+            <column name="updated_by" not-null="true" />
+        </property>
+        <property name="replyExpence" type="java.lang.Double">
+            <column name="reply_expence" precision="22" scale="0" />
+        </property>
+        <set name="tmReplyMedias" table="tm_reply_media" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tm_ticket_reply_id" not-null="true" />
+            </key>
+            <one-to-many class="com.it.db.TmReplyMedia" />
+        </set>
+    </class>
+</hibernate-mapping>

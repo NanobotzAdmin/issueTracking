@@ -5,11 +5,11 @@
 --%>
 
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,7 +18,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -93,7 +93,7 @@
                             <button class="accordion-button bg-gray-600 text-white px-3 py-10px pointer-cursor" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
                                 <%
 //                                            get user assigned active tickets
-                                    List<Object[]> loadUserAssignedActiveTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getUserAssignedActiveTicket(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETACTIVE);
+                                    List<Object[]> loadUserAssignedActiveTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getUserAssignedActiveTicket(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETACTIVE);
                                 %>
                                 Active Assigned Tickets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="badge bg-primary"><%=loadUserAssignedActiveTickets.size()%></span>
                             </button>
@@ -123,7 +123,7 @@
                         <div class="accordion-header" id="headingTwo">
                             <button class="accordion-button bg-gray-600 text-white px-3 py-10px pointer-cursor" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
                                 <%
-                                    List<TmTickets> loadUserCreatedActiveTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getUserCreatedActiveTickets(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETACTIVE);
+                                    List<TmTickets> loadUserCreatedActiveTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getUserCreatedActiveTickets(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETACTIVE);
                                 %>
                                 Active Created Tickets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="badge bg-success"><%=loadUserCreatedActiveTickets.size()%></span>
                             </button>
@@ -153,7 +153,7 @@
                             <button class="accordion-button bg-gray-600 text-white px-3 py-10px pointer-cursor" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
                                 <%
 //                                            get user assigned complete tickets
-                                    List<Object[]> loadUserAssignedCompleteTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getUserAssignedCompleteTicket(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
+                                    List<Object[]> loadUserAssignedCompleteTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getUserAssignedCompleteTicket(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
                                 %>
                                 Completed Assigned Tickets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="badge bg-warning"><%=loadUserAssignedCompleteTickets.size()%></span>
                             </button>
@@ -183,7 +183,7 @@
                         <div class="accordion-header" id="headingFour">
                             <button class="accordion-button bg-gray-600 text-white px-3 py-10px pointer-cursor" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
                                 <%
-                                    List<TmTickets> loadUserCreatedCompleteTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getUserCreatedCompleteTickets(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
+                                    List<TmTickets> loadUserCreatedCompleteTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getUserCreatedCompleteTickets(ses, selectedUser.getId(), STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
                                 %>
                                 Completed Created Tickets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="badge bg-danger"><%=loadUserCreatedCompleteTickets.size()%></span>
                             </button>
@@ -212,7 +212,7 @@
                         <div class="accordion-header" id="headingFive">
                             <button class="accordion-button bg-gray-600 text-white px-3 py-10px pointer-cursor" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
                                 <%
-                                    List<QmQueueHasUser> loadUserAssignedQueues = new com.ring.queueManagementModel.QMS_QM_Queue_Has_User().getQueuesByUserId(ses, selectedUser.getId());
+                                    List<QmQueueHasUser> loadUserAssignedQueues = new com.it.queueManagementModel.QMS_QM_Queue_Has_User().getQueuesByUserId(ses, selectedUser.getId());
                                 %>
                                 Assigned Queues &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="badge bg-purple"><%=loadUserAssignedQueues.size()%></span>
                             </button>

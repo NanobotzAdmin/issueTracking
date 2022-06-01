@@ -4,11 +4,11 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.LmLocationsHasUmUser"%>
+<%@page import="com.it.db.LmLocationsHasUmUser"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.LmLocations"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.LmLocations"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -18,7 +18,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -60,7 +60,7 @@
                             <select class="form-control" style="color: #fff" id="branchManagerU">
                                 <option selected="" value="<%=selectedLocation.getUmUser().getId()%>" style="color: #000"><%=selectedLocation.getUmUser().getFirstName()%> <%=selectedLocation.getUmUser().getLastName()%></option>
                                 <%
-                                    List<UmUser> loadBranchManagersU = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                    List<UmUser> loadBranchManagersU = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                     if (!loadBranchManagersU.isEmpty()) {
                                         for (UmUser elemU : loadBranchManagersU) {
                                 %>
@@ -78,7 +78,7 @@
                                         <select class="form-control" style="color: #fff" id="userToBranchU">
                                             <option selected="" value="0" style="color: #000">-- Select User --</option>
                                             <%
-                                                List<UmUser> loadUsersToBranchU = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                List<UmUser> loadUsersToBranchU = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                 if (!loadUsersToBranchU.isEmpty()) {
                                                     for (UmUser elem2U : loadUsersToBranchU) {
                                             %>
@@ -108,7 +108,7 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                            List<LmLocationsHasUmUser> loadLocationHasUsers = new com.ring.locationManagementModel.LMS_LM_Locations_Has_Um_User().getAllUsersByLocationId(ses, selectedLocation.getId());
+                                            List<LmLocationsHasUmUser> loadLocationHasUsers = new com.it.locationManagementModel.LMS_LM_Locations_Has_Um_User().getAllUsersByLocationId(ses, selectedLocation.getId());
                                             if (!loadLocationHasUsers.isEmpty()) {
                                                 for (LmLocationsHasUmUser userByLocation : loadLocationHasUsers) {
                                         %>

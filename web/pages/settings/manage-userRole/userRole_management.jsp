@@ -1,7 +1,7 @@
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 s<%-- 
@@ -14,7 +14,7 @@ s<%--
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Logger logger = Logger.getLogger(this.getClass().getName());
         UmUser logedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getSession().getAttribute("nowLoginUser").toString()));
         String gg = (request.getParameter("pageUrl"));
@@ -24,12 +24,12 @@ s<%--
 %>
 <h1 class="page-header">User Roles</h1><br>
 <%
-    List<PmInterfaceComponent> getComponentByIterfaceId = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
+    List<PmInterfaceComponent> getComponentByIterfaceId = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
     boolean userRoleMain = false;
 
     if (!getComponentByIterfaceId.isEmpty()) {
         for (PmInterfaceComponent cmpt : getComponentByIterfaceId) {
-            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
+            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
             if (getUserHasComponentByUserAndComponentId != null) {
                 if (getUserHasComponentByUserAndComponentId.getPmInterfaceComponent().getComponentId().equals("USERROLESETTINGSMAINCOMPONENT")) {
                     userRoleMain = true;

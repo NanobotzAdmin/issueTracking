@@ -4,16 +4,16 @@
     Author     : buddh
 --%>
 
-<%@page import="com.ring.db.LmLocations"%>
+<%@page import="com.it.db.LmLocations"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
-<%@page import="com.ring.db.QmSubCategories"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmCategories"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.db.QmSubCategories"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmCategories"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,7 +22,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -63,7 +63,7 @@
             <div class="col-sm-6">
                 <div class="avatars">
                     <%
-                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                         if (!loadUsersByTicket.isEmpty()) {
                             for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                     %>
@@ -112,7 +112,7 @@
                             <select class="default-select2 form-control" id="queueForTF" onchange="categoryByQueueTF(this.value)">
                                 <option value="<%=selectedTicket.getQmQueue().getId()%>" selected=""><%=selectedTicket.getQmQueue().getQueueName()%></option>
                                 <%
-                                    List<QmQueue> loadQueueTF = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                    List<QmQueue> loadQueueTF = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                     if (!loadQueueTF.isEmpty()) {
                                         for (QmQueue queueTF : loadQueueTF) {
                                 %>
@@ -131,7 +131,7 @@
 
                                 <%
                                     if (selectedTicket.getQmQueue() != null) {
-                                        List<QmCategories> loadCategoryTF = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, selectedTicket.getQmQueue().getId());
+                                        List<QmCategories> loadCategoryTF = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, selectedTicket.getQmQueue().getId());
                                         if (!loadCategoryTF.isEmpty()) {
                                             for (QmCategories categoryTF : loadCategoryTF) {
                                 %>
@@ -143,7 +143,7 @@
                                 <%} else {%>
                                 <option value="0" selected="">-- Select One --</option>
                                 <%
-                                    List<QmCategories> loadCategoryTF = new com.ring.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                    List<QmCategories> loadCategoryTF = new com.it.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                     if (!loadCategoryTF.isEmpty()) {
                                         for (QmCategories categoryTF : loadCategoryTF) {
                                 %>
@@ -162,7 +162,7 @@
                                 <option value="<%=selectedTicket.getQmSubCategories().getId()%>" selected=""><%=selectedTicket.getQmSubCategories().getSubCategoryName()%></option>
                                 <%
                                     if (selectedTicket.getQmCategories() != null) {
-                                        List<QmSubCategories> loadSubCategoryTF = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, selectedTicket.getQmCategories().getId());
+                                        List<QmSubCategories> loadSubCategoryTF = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, selectedTicket.getQmCategories().getId());
                                         if (!loadSubCategoryTF.isEmpty()) {
                                             for (QmSubCategories subCategoryTF : loadSubCategoryTF) {
                                 %>
@@ -174,7 +174,7 @@
                                 <%} else {%>
                                 <option value="0" selected="">-- Select One --</option>
                                 <%
-                                    List<QmSubCategories> loadSubCategoryTF = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                    List<QmSubCategories> loadSubCategoryTF = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                     if (!loadSubCategoryTF.isEmpty()) {
                                         for (QmSubCategories subCategoryTF : loadSubCategoryTF) {
                                 %>
@@ -194,7 +194,7 @@
                                 <%} else {%>
                                 <option value="0" selected="">-- Select One --</option>
                                 <%
-                                    List<LmLocations> loadLocationForwardTickets = new com.ring.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
+                                    List<LmLocations> loadLocationForwardTickets = new com.it.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
                                     if (!loadLocationForwardTickets.isEmpty()) {
                                         for (LmLocations locationsFwd : loadLocationForwardTickets) {
                                 %>
@@ -210,7 +210,7 @@
                                 <select class="form-control" style="color: #fff" id="userToForwardTicketC">
                                     <option selected="" value="0" style="color: #000">-- Select User --</option>
                                     <%
-                                        List<UmUser> loadUsersToTicketForward = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                        List<UmUser> loadUsersToTicketForward = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                         if (!loadUsersToTicketForward.isEmpty()) {
                                             for (UmUser elemFT : loadUsersToTicketForward) {
                                     %>
@@ -236,7 +236,7 @@
                                 </thead>
                                 <tbody>
                                     <%
-                                        List<TmTicketsHasUmUser> loadTicketHasUSerToForwardTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                                        List<TmTicketsHasUmUser> loadTicketHasUSerToForwardTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                                         if (!loadTicketHasUSerToForwardTicket.isEmpty()) {
                                             for (TmTicketsHasUmUser elemTHUFWD : loadTicketHasUSerToForwardTicket) {
                                     %>

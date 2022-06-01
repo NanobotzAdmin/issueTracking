@@ -5,9 +5,9 @@
 --%>
 
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategories"%>
+<%@page import="com.it.db.QmSubCategories"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +16,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -29,7 +29,7 @@
 <select class="default-select2 form-control" id="loadSubCategoryByCategoryId">
     <option value="0" selected="">-- Select One --</option>
     <%
-        List<QmSubCategories> loadSubCatByCatId = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, categoryId);
+        List<QmSubCategories> loadSubCatByCatId = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, categoryId);
         if(!loadSubCatByCatId.isEmpty()){
             for (QmSubCategories subCat : loadSubCatByCatId) {
     %>

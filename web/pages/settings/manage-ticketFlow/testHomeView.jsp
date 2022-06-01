@@ -14,7 +14,7 @@
             <select class="default-select2 form-control" id="loadQueueToHome">
                 <option value="0" selected="">-- Select One --</option>
                 <%
-                    List<QmQueue> loadQueues = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                    List<QmQueue> loadQueues = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                     if (!loadQueues.isEmpty()) {
                         for (QmQueue que : loadQueues) {
                 %>
@@ -30,7 +30,7 @@
             <select class="default-select2 form-control" id="loadCategoryToHome">
                 <option value="0" selected="">-- Select One --</option>
                 <%
-                    List<QmCategories> loadCategorys = new com.ring.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                    List<QmCategories> loadCategorys = new com.it.queueManagementModel.QMS_QM_Categories().getAllCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                     if (!loadCategorys.isEmpty()) {
                         for (QmCategories cat : loadCategorys) {
                 %>
@@ -46,7 +46,7 @@
             <select class="default-select2 form-control" id="loadSubCategoryByCategoryId">
                 <option value="0" selected="">-- Select One --</option>
                 <%
-                    List<QmSubCategories> loadSubCategorys = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                    List<QmSubCategories> loadSubCategorys = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getAllSubCategoriesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                     if (!loadSubCategorys.isEmpty()) {
                         for (QmSubCategories subCat : loadSubCategorys) {
                 %>
@@ -89,7 +89,7 @@
                                                     </thead>
                                                     <tbody>
                                     <%
-                                        List<TmTickets> loadTicketsByUserANdCurrentMonth = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
+                                        List<TmTickets> loadTicketsByUserANdCurrentMonth = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
                                         if(!loadTicketsByUserANdCurrentMonth.isEmpty()){
                                             for (TmTickets ticketsByUser : loadTicketsByUserANdCurrentMonth) {
                                     %>

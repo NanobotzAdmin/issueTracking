@@ -4,20 +4,20 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.RcasAnswers"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.RcasQuestion"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.RcasAnswers"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.RcasQuestion"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Logger logger = Logger.getLogger(this.getClass().getName());
         UmUser logedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getSession().getAttribute("nowLoginUser").toString()));
         String gg = (request.getParameter("pageUrl"));
@@ -27,12 +27,12 @@
 %>
 <h1 class="page-header">Root Cause Analysis Settings</h1><br>
 <%
-    List<PmInterfaceComponent> getComponentByIterfaceId = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
+    List<PmInterfaceComponent> getComponentByIterfaceId = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
     boolean rootCauseManagementMain = false;
 
     if (!getComponentByIterfaceId.isEmpty()) {
         for (PmInterfaceComponent cmpt : getComponentByIterfaceId) {
-            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
+            UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
             if (getUserHasComponentByUserAndComponentId != null) {
                 if (getUserHasComponentByUserAndComponentId.getPmInterfaceComponent().getComponentId().equals("ROOTCAUSEMAINCOMPONENT")) {
                     rootCauseManagementMain = true;
@@ -84,7 +84,7 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                List<RcasQuestion> loadAllRootCauseQuestion = new com.ring.rootCauseManagementModel.RCMS_Rcas_Question().getAllRootCauseByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<RcasQuestion> loadAllRootCauseQuestion = new com.it.rootCauseManagementModel.RCMS_Rcas_Question().getAllRootCauseByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                 if (!loadAllRootCauseQuestion.isEmpty()) {
                                                     for (RcasQuestion elem : loadAllRootCauseQuestion) {
                                             %>
@@ -133,7 +133,7 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                List<RcasAnswers> loadAllRootCauseAnswers = new com.ring.rootCauseManagementModel.RCMS_Rcas_Answers().getAllAnswersByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<RcasAnswers> loadAllRootCauseAnswers = new com.it.rootCauseManagementModel.RCMS_Rcas_Answers().getAllAnswersByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                 if (!loadAllRootCauseAnswers.isEmpty()) {
                                                     for (RcasAnswers elemA : loadAllRootCauseAnswers) {
                                             %>

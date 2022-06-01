@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2022 9:18:18 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.it.db.SmSessionActivity" table="sm_session_activity" catalog="nanobotz_issue_tracking" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="smSession" class="com.it.db.SmSession" fetch="select">
+            <column name="sm_session_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="umUser" class="com.it.db.UmUser" fetch="select">
+            <column name="um_user_id" not-null="true" />
+        </many-to-one>
+        <property name="description" type="string">
+            <column name="description" length="600" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="activityType" type="string">
+            <column name="activity_type" length="45" />
+        </property>
+        <property name="activityTopic" type="string">
+            <column name="activity_topic" length="45" />
+        </property>
+        <property name="activityId" type="java.lang.Integer">
+            <column name="activity_id" />
+        </property>
+        <property name="remark1" type="string">
+            <column name="remark1" length="150" />
+        </property>
+        <property name="remark2" type="string">
+            <column name="remark2" length="150" />
+        </property>
+    </class>
+</hibernate-mapping>

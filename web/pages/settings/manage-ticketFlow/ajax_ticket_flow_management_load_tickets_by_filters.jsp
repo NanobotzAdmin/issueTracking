@@ -4,15 +4,15 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
-<%@page import="com.ring.db.QmSubCategories"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.db.QmSubCategories"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.QmCategories"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.QmCategories"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,7 +23,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -52,11 +52,11 @@
         </tr>
     </thead>
     <tbody>
-        <%//            List<Object[]> loadTicketsByUserANdQueue2 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndQueueIdByDateRange(ses, logedUser.getId(), quId, catId, subCatId,startDate,endDate);
+        <%//            List<Object[]> loadTicketsByUserANdQueue2 = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndQueueIdByDateRange(ses, logedUser.getId(), quId, catId, subCatId,startDate,endDate);
 //            if (!loadTicketsByUserANdQueue2.isEmpty()) {
 //                for (Object[] data2 : loadTicketsByUserANdQueue2) {
 //                    TmTickets ticketsByque = (TmTickets) ses.load(TmTickets.class, (Integer) data2[0]);
-            List<TmTickets> loadTicketsByFilters = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueOrCatOrSubCatAndDateRange(ses, quId, catId, subCatId, startDate, endDate);
+            List<TmTickets> loadTicketsByFilters = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueOrCatOrSubCatAndDateRange(ses, quId, catId, subCatId, startDate, endDate);
             if (!loadTicketsByFilters.isEmpty()) {
                 for (TmTickets ticketsByque : loadTicketsByFilters) {
 
@@ -100,7 +100,7 @@
             <td >
                 <div class="avatars">
                     <%
-                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByque.getId());
+                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByque.getId());
                         if (!loadUsersByTicket.isEmpty()) {
                             for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                     %>

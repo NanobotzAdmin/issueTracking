@@ -14,7 +14,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Ring: Queue Management Login</title>
+        <title>Nanobotz: Issues Tracking Login</title>
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
         <meta content="" name="description" />
         <meta content="" name="author" />
@@ -76,7 +76,7 @@
                     <div class="login-header">
                         <div class="brand">
                             <div class="d-flex align-items-center">
-                                <img src="assets/img/logo/white-logo.png" class="img-fluid" style="width:60px;"> <span style="font-size: large">&nbsp;Ticket Management</span>
+                                <img src="assets/img/logo/white-logo.png" class="img-fluid" style="width:60px;"> <span style="font-size: large">&nbsp;Issues Tracking</span>
                             </div>
                             <small>Next Generation of Customer Service </small>
                         </div>

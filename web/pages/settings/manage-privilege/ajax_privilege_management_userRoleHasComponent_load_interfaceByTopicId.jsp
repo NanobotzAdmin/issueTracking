@@ -5,14 +5,14 @@
 --%>
 
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
-<%@page import="com.ring.db.PmUserRoleHasInterfaceComponent"%>
-<%@page import="com.ring.db.UmUser"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.PmInterface"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmUserRole"%>
-<%@page import="com.ring.db.PmInterfaceTopic"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.PmUserRoleHasInterfaceComponent"%>
+<%@page import="com.it.db.UmUser"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.PmInterface"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmUserRole"%>
+<%@page import="com.it.db.PmInterfaceTopic"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
@@ -22,7 +22,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -34,7 +34,7 @@
 
             PmUserRole selectedUserRole001 = (PmUserRole) ses.load(PmUserRole.class, Integer.parseInt(request.getParameter("userRoleId")));
 
-            List<UmUserHasInterfaceComponent> getInterfaceTopicHasComponent = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndTopicId(ses, selectedUserRole001.getId(), selectedInterfaceTopic.getId());
+            List<UmUserHasInterfaceComponent> getInterfaceTopicHasComponent = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndTopicId(ses, selectedUserRole001.getId(), selectedInterfaceTopic.getId());
 
             if (!getInterfaceTopicHasComponent.isEmpty()) {
 
@@ -59,7 +59,7 @@
 <br>
 <%
 //        get interface by toipic
-    List<PmInterface> getInterfacesByTopicId = new com.ring.privilegeManagementModel.PMS_PM_Interface().getAllInterfacesByTopic(ses, STATIC_DATA_MODEL.PMACTIVE, selectedInterfaceTopic.getId());
+    List<PmInterface> getInterfacesByTopicId = new com.it.privilegeManagementModel.PMS_PM_Interface().getAllInterfacesByTopic(ses, STATIC_DATA_MODEL.PMACTIVE, selectedInterfaceTopic.getId());
     if (!getInterfacesByTopicId.isEmpty()) {
         for (PmInterface allInterfaces : getInterfacesByTopicId) {
 %>
@@ -69,13 +69,13 @@
         int selectedUserRoleHasUsersSize = 0;
         int interfaceHasComponentSize = 0;
         int howmanyUsersAssigComponentSize = 0;
-        List<UmUser> loadSelectedUserRoleUsers = new com.ring.userManagementModel.UMS_UM_User().searchUsersByStatusAndUserRole(ses, selectedUserRole001.getId(), STATIC_DATA_MODEL.ACTIVE);
+        List<UmUser> loadSelectedUserRoleUsers = new com.it.userManagementModel.UMS_UM_User().searchUsersByStatusAndUserRole(ses, selectedUserRole001.getId(), STATIC_DATA_MODEL.ACTIVE);
         selectedUserRoleHasUsersSize = loadSelectedUserRoleUsers.size();
-        List<PmInterfaceComponent> loadComponentBYinterfaceid = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, allInterfaces.getId());
+        List<PmInterfaceComponent> loadComponentBYinterfaceid = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, allInterfaces.getId());
         interfaceHasComponentSize = loadComponentBYinterfaceid.size();
         if (!loadComponentBYinterfaceid.isEmpty()) {
             for (PmInterfaceComponent elem : loadComponentBYinterfaceid) {
-                List<UmUserHasInterfaceComponent> checkUserHasComponent = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndComponentId(ses, selectedUserRole001.getId(), elem.getId());
+                List<UmUserHasInterfaceComponent> checkUserHasComponent = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndComponentId(ses, selectedUserRole001.getId(), elem.getId());
                 howmanyUsersAssigComponentSize += checkUserHasComponent.size();
             }
         }
@@ -83,7 +83,7 @@
 //                        System.out.println("interfaceHasComponentSize = " + interfaceHasComponentSize);
 //                        System.out.println("howmanyUsersAssigComponentSize = " + howmanyUsersAssigComponentSize);
         int calMethod = selectedUserRoleHasUsersSize * interfaceHasComponentSize;
-        List<UmUserHasInterfaceComponent> getInterfaceTopicHasComponent2 = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndInterfaceId(ses, selectedUserRole001.getId(), allInterfaces.getId());
+        List<UmUserHasInterfaceComponent> getInterfaceTopicHasComponent2 = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserRoleAndInterfaceId(ses, selectedUserRole001.getId(), allInterfaces.getId());
         if (!getInterfaceTopicHasComponent2.isEmpty()) {
 //                    int hh = getInterfaceTopicHasComponent2.size();
 //                    List<UmUser> loadUsersByUserRole = new com.hrm.userManagementModel.UMS_UM_User().searchUsersByStatusAndUserRole(ses, selectedUserRole001.getId(), STATIC_DATA_MODEL.PMACTIVE);
@@ -99,7 +99,7 @@
 
     <%} else {%>
     <%//check u role has component by interface
-        List<PmUserRoleHasInterfaceComponent> checkUserRoleHasCompo = new com.ring.privilegeManagementModel.PMS_PM_User_Role_Has_Interface_Component().getAllUserRoleHasInterfaceComponentByUserRoleAndInterfaceId(ses, selectedUserRole001.getId(), allInterfaces.getId());
+        List<PmUserRoleHasInterfaceComponent> checkUserRoleHasCompo = new com.it.privilegeManagementModel.PMS_PM_User_Role_Has_Interface_Component().getAllUserRoleHasInterfaceComponentByUserRoleAndInterfaceId(ses, selectedUserRole001.getId(), allInterfaces.getId());
         if (!checkUserRoleHasCompo.isEmpty()) {
     %>
     <label class=" control-label text-warning"style="margin-top: 10px;"><%=allInterfaces.getInterfaceName()%></label>

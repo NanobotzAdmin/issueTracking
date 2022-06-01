@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 31, 2022 9:18:18 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.it.db.LmLocations" table="lm_locations" catalog="nanobotz_issue_tracking" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="umUser" class="com.it.db.UmUser" fetch="select">
+            <column name="branch_manager" not-null="true" />
+        </many-to-one>
+        <property name="locationName" type="string">
+            <column name="location_name" length="150" />
+        </property>
+        <property name="locationAddress" type="string">
+            <column name="location_address" length="650" />
+        </property>
+        <property name="mobileNumber" type="string">
+            <column name="mobile_number" length="45" />
+        </property>
+        <property name="landPhoneNumber" type="string">
+            <column name="land_phone_number" length="45" />
+        </property>
+        <property name="isActive" type="java.lang.Boolean">
+            <column name="is_active" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="19" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="19" />
+        </property>
+        <property name="createdBy" type="java.lang.Integer">
+            <column name="created_by" />
+        </property>
+        <property name="updatedBy" type="java.lang.Integer">
+            <column name="updated_by" />
+        </property>
+        <set name="lmLocationsHasUmUsers" table="lm_locations_has_um_user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="lm_locations_id" not-null="true" />
+            </key>
+            <one-to-many class="com.it.db.LmLocationsHasUmUser" />
+        </set>
+        <set name="umCustomers" table="um_customer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="lm_locations_id" />
+            </key>
+            <one-to-many class="com.it.db.UmCustomer" />
+        </set>
+        <set name="tmTicketses" table="tm_tickets" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="lm_locations_id" />
+            </key>
+            <one-to-many class="com.it.db.TmTickets" />
+        </set>
+        <set name="lmLocationHistories" table="lm_location_history" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="lm_locations_id" not-null="true" />
+            </key>
+            <one-to-many class="com.it.db.LmLocationHistory" />
+        </set>
+    </class>
+</hibernate-mapping>

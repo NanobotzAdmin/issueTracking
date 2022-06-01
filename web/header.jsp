@@ -4,7 +4,7 @@
     Author     : dinuka
 --%>
 
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -13,7 +13,7 @@
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
 
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -24,7 +24,7 @@
 <div id="header" class="app-header">
     <!-- BEGIN navbar-header -->
     <div class="navbar-header">
-        <a href="home.jsp" class="navbar-brand"><img src="assets/img/logo/white-logo.png" class="img-fluid"> Ticket Management</a>
+        <a href="home.jsp" class="navbar-brand"><img src="assets/img/logo/white-logo.png" class="img-fluid"> Issues Tracking</a>
         <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

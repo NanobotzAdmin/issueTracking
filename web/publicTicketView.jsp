@@ -7,9 +7,9 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.SmSessionActivity"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.TmTickets"%>
+<%@page import="com.it.db.SmSessionActivity"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.TmTickets"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -84,14 +84,14 @@
                         <div class="col-sm-6">
                             <div class="timeline" id="loadTimelineDiv">
                                 <%   
-                                    Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
-                                    TmTickets selectedTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketByKey(ses, key);
+                                    Session ses = com.it.connection.Connection.getSessionFactory().openSession();
+                                    TmTickets selectedTicket = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketByKey(ses, key);
                                     if (selectedTicket == null) {
                                 %>
                                 <h1>Ticket Not Found</h1>
 
                                 <%} else {
-                                    List<SmSessionActivity> ticketActivityList = new com.ring.userManagementModel.UMS_UM_Session_Activity().searchActivitiesByTicketIdToTimeLine(ses, selectedTicket.getId(), STATIC_DATA_MODEL.TICKETMANAGEMENT, STATIC_DATA_MODEL.TICKETREPLYMANAGEMENT);
+                                    List<SmSessionActivity> ticketActivityList = new com.it.userManagementModel.UMS_UM_Session_Activity().searchActivitiesByTicketIdToTimeLine(ses, selectedTicket.getId(), STATIC_DATA_MODEL.TICKETMANAGEMENT, STATIC_DATA_MODEL.TICKETREPLYMANAGEMENT);
                                     if (!ticketActivityList.isEmpty()) {
                                         for (SmSessionActivity ticketActivity : ticketActivityList) {
                                 %>

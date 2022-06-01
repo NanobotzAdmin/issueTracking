@@ -4,9 +4,9 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -16,7 +16,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -57,7 +57,7 @@
                             <select class="form-control" style="color: #fff" id="branchManager">
                                 <option selected="" value="0" style="color: #000">-- Select Branch Manager --</option>
                                 <%
-                                    List<UmUser> loadBranchManagers = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                    List<UmUser> loadBranchManagers = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                     if (!loadBranchManagers.isEmpty()) {
                                         for (UmUser elem : loadBranchManagers) {
                                 %>
@@ -93,7 +93,7 @@
                                         <select class="form-control" style="color: #fff" id="userToBranch">
                                             <option selected="" value="0" style="color: #000">-- Select User --</option>
                                             <%
-                                                List<UmUser> loadUsersToBranch = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                List<UmUser> loadUsersToBranch = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                 if (!loadUsersToBranch.isEmpty()) {
                                                     for (UmUser elem2 : loadBranchManagers) {
                                             %>

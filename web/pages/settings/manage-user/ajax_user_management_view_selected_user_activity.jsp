@@ -4,11 +4,11 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.SmSessionActivity"%>
-<%@page import="com.ring.db.LmLocationHistory"%>
+<%@page import="com.it.db.SmSessionActivity"%>
+<%@page import="com.it.db.LmLocationHistory"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.LmLocations"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.LmLocations"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -18,7 +18,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
 //        Logger logger = Logger.getLogger(this.getClass().getName());
@@ -45,7 +45,7 @@
                             </thead>
                             <tbody>
                                 <%
-                                    List<SmSessionActivity> loadSelectedUserActivities = new com.ring.userManagementModel.UMS_UM_Session_Activity().searchActivitiesByUser(ses, selectedUserActivity.getId());
+                                    List<SmSessionActivity> loadSelectedUserActivities = new com.it.userManagementModel.UMS_UM_Session_Activity().searchActivitiesByUser(ses, selectedUserActivity.getId());
                                     if (!loadSelectedUserActivities.isEmpty()) {
                                         for (SmSessionActivity userActivity : loadSelectedUserActivities) {
                                 %>

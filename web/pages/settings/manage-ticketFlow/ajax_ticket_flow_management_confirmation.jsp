@@ -4,20 +4,20 @@
     Author     : buddh
 --%>
 
-<%@page import="com.ring.configurationModel.NumberFortmaing"%>
-<%@page import="com.ring.db.TmReplyMedia"%>
-<%@page import="com.ring.db.TmTicketMedia"%>
+<%@page import="com.it.configurationModel.NumberFortmaing"%>
+<%@page import="com.it.db.TmReplyMedia"%>
+<%@page import="com.it.db.TmTicketMedia"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategoriesHasUser"%>
-<%@page import="com.ring.db.QmCategoriesHasUser"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.TmTicketReply"%>
+<%@page import="com.it.db.QmSubCategoriesHasUser"%>
+<%@page import="com.it.db.QmCategoriesHasUser"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.TmTicketReply"%>
 <%@page import="java.util.List"%>
 <%@page import="java.nio.charset.StandardCharsets"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -28,7 +28,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -51,29 +51,35 @@
                     </div>
 
                     <%
-                        TmTicketsHasUmUser checkLogedUserInTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getUsersByTicketIdAndUserId(ses, selectedTicket.getId(), logedUser.getId());
+                        TmTicketsHasUmUser checkLogedUserInTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getUsersByTicketIdAndUserId(ses, selectedTicket.getId(), logedUser.getId());
 
                     %>
                     <div class="d-flex flex-wrap">
-                        <%                            QmQueueHasUser checkLogedUserInQueue = new com.ring.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, selectedTicket.getQmQueue().getId(), logedUser.getId());
+                        <%--
+                        <%                            QmQueueHasUser checkLogedUserInQueue = new com.it.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, selectedTicket.getQmQueue().getId(), logedUser.getId());
                             QmCategoriesHasUser checkLogedUserInCategory = null;
                             QmSubCategoriesHasUser checkLogedUserInSubCategory = null;
                             if (selectedTicket.getQmCategories() != null) {
-                                checkLogedUserInCategory = new com.ring.queueManagementModel.QMS_QM_Categories_Has_User().getUsersByCategoryId(ses, selectedTicket.getQmCategories().getId(), logedUser.getId());
+                                checkLogedUserInCategory = new com.it.queueManagementModel.QMS_QM_Categories_Has_User().getUsersByCategoryId(ses, selectedTicket.getQmCategories().getId(), logedUser.getId());
                             }
                             if (selectedTicket.getQmSubCategories() != null) {
-                                checkLogedUserInSubCategory = new com.ring.queueManagementModel.QMS_QM_Sub_Categories_Has_User().getUsersBySubCategoryId(ses, selectedTicket.getQmSubCategories().getId(), logedUser.getId());
+                                checkLogedUserInSubCategory = new com.it.queueManagementModel.QMS_QM_Sub_Categories_Has_User().getUsersBySubCategoryId(ses, selectedTicket.getQmSubCategories().getId(), logedUser.getId());
                             }
                             if ((checkLogedUserInQueue != null || checkLogedUserInCategory != null || checkLogedUserInSubCategory != null) && (selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETPENDING || selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETACTIVE)) {
                         %>
                         <div id="FERDIV"><button type="button" class="btn btn-gray btn-sm" onclick="forwardTicketLoad(<%=selectedTicket.getId()%>,<%=queId%>)"><i class="fa fa-arrow-right"></i></button></div>
                                 <%}%>
-
+                        --%>
                         <!--<button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></button>-->
 
 
                         <%
                             if (checkLogedUserInTicket != null && selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETACTIVE) {
+                        %>
+                        <div id="STRTBTN"><button type="button" class="btn btn-info btn-sm" onclick="startTicket()">Start</button></div>
+                        <%}%>
+                        <%
+                            if (checkLogedUserInTicket != null && selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETSTARTED) {
                         %>
                         <div id="CMPLTBTN"><button type="button" class="btn btn-info btn-sm" onclick="completeTicket()">Complete</button></div>
                         <%}%>
@@ -84,13 +90,6 @@
                             <div id="COFRMBTN"><button type="button" class="btn btn-info btn-sm" onclick="confirmTicket()">Confirm</button></div>
                             <div id="RJTBTN"><button type="button" class="btn btn-danger btn-sm" onclick="rejectTicket()">Reject</button></div>
                         </div>
-                        <%}%>
-
-                        <%
-                            if ((checkLogedUserInQueue != null || checkLogedUserInCategory != null || checkLogedUserInSubCategory != null) && (selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETCONFIRMED)) {
-                        %>
-                        <!--<button type="button" class="btn btn-primary btn-sm">Archive Ticket</button>-->
-                        <div><button type="button" class="btn btn-primary btn-sm" onclick="loadArchivedeDetails(<%=selectedTicket.getId()%>,<%=queId%>)">Archive Ticket</button></div>
                         <%}%>
                     </div>
                 </div>
@@ -106,7 +105,7 @@
                                 <div class="d-flex align-items-centermb-1">
                                     <div class="avatars">
                                         <%
-                                            List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                                            List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                                             if (!loadUsersByTicket.isEmpty()) {
                                                 for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                                         %>
@@ -120,7 +119,7 @@
 
 
                             </div>
-
+<%--
                             <div class="p-2 bg-white-transparent-2  me-2 " style="height: 61px;">
                                 <%
                                     String ticketLocation = "";
@@ -143,7 +142,7 @@
                             </div><!--was cardbody-->
 
                         </div><!--was card-->
-
+--%>
                     </div>
 
                 </div>
@@ -247,7 +246,7 @@
                                                     <div class="d-flex flex-wrap flex-row m-1">
                                                         <%
 
-                                                            List<TmTicketMedia> getTicketMediaByTicket = new com.ring.ticketManagementModel.TMS_TM_Ticket_Media().getTicketMediaByTicketd(ses, selectedTicket.getId());
+                                                            List<TmTicketMedia> getTicketMediaByTicket = new com.it.ticketManagementModel.TMS_TM_Ticket_Media().getTicketMediaByTicketd(ses, selectedTicket.getId());
                                                             if (!getTicketMediaByTicket.isEmpty()) {
                                                                 for (TmTicketMedia ticketMedi : getTicketMediaByTicket) {
                                                                     String filename = ticketMedi.getMediaPath();
@@ -291,7 +290,7 @@
                             <!--BEGIN Chat for ticket-->
 
                             <%
-                                List<TmTicketReply> loadTicketReplyByTicketId = new com.ring.ticketManagementModel.TMS_TM_Ticket_Reply().getTicketReplyByTicketId(ses, selectedTicket.getId());
+                                List<TmTicketReply> loadTicketReplyByTicketId = new com.it.ticketManagementModel.TMS_TM_Ticket_Reply().getTicketReplyByTicketId(ses, selectedTicket.getId());
                                 if (!loadTicketReplyByTicketId.isEmpty()) {
                                     for (TmTicketReply ticketReply : loadTicketReplyByTicketId) {
                                         UmUser replyUser = (UmUser) ses.load(UmUser.class, ticketReply.getCreatedBy());
@@ -313,18 +312,18 @@
                                     </h5>
                                     <div class=" flex-row">
                                         <span><%=ticketReply.getReplyDescription()%>
-
+                                            <%--
                                             <%
                                                 if (ticketReply.getReplyExpence() != null) {
                                             %>
                                             <span class="badge fw-bold fs-10px rounded-2 bg-danger ms-1">Expense added <%=NumberFortmaing.currencyFormat(ticketReply.getReplyExpence())%> Rs</span>
                                             <%}%>
-
+                                            --%>
                                         </span>
                                     </div>
                                     <div class="d-flex flex-wrap flex-row m-1">
                                         <%
-                                            List<TmReplyMedia> getReplyMediaByReply = new com.ring.ticketManagementModel.TMS_TM_Reply_Media().getReplyMediaByReplyId(ses, ticketReply.getId());
+                                            List<TmReplyMedia> getReplyMediaByReply = new com.it.ticketManagementModel.TMS_TM_Reply_Media().getReplyMediaByReplyId(ses, ticketReply.getId());
                                             if (!getReplyMediaByReply.isEmpty()) {
                                                 for (TmReplyMedia replyMedi : getReplyMediaByReply) {
                                                     String replyMediaPath = replyMedi.getMediaPath();
@@ -401,19 +400,21 @@
                     <div class="row">
                         <div class="col">
                             <!--BEGIN Chat Reply form-->
+                            <%--
                             <%
                                 //                                check log user is in selected queu
-                                QmQueueHasUser checkLogedUserInQueueTC = new com.ring.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, queId, logedUser.getId());
+                                QmQueueHasUser checkLogedUserInQueueTC = new com.it.queueManagementModel.QMS_QM_Queue_Has_User().getUsersByQueueId(ses, queId, logedUser.getId());
                                 if (checkLogedUserInQueueTC != null) {
                             %>
                             <input type="hidden" id="checkUserInQueueTC" value="1">
                             <%} else {%>
                             <input type="hidden" id="checkUserInQueueTC" value="0">
                             <%}%>
+                            --%>
                             <div class="card">
                                 <div class="card-body">
                                     <%
-                                        if ((checkLogedUserInQueueTC != null) && (selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETPENDING || selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETACTIVE)) {
+                                        if ((selectedTicket.getCreatedBy() == logedUser.getId())) {
                                     %>
                                     <div class="row mb-3">
                                         <div class="form-group col-md-6">
@@ -421,7 +422,7 @@
                                             <select class="form-control default-select2" style="color: #fff" id="userToTicketC">
                                                 <option selected="" value="0" style="color: #000">-- Select User --</option>
                                                 <%
-                                                    List<UmUser> loadUsersToTicketC = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                    List<UmUser> loadUsersToTicketC = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                     if (!loadUsersToTicketC.isEmpty()) {
                                                         for (UmUser elemTC : loadUsersToTicketC) {
 
@@ -434,7 +435,7 @@
                                         <div class="form-group col-md-6" id="ADDUSRTOTCKBTN">
                                             <label></label><br>
                                             <%
-                                                if (checkLogedUserInQueueTC != null) {
+                                                if (selectedTicket.getCreatedBy() == logedUser.getId()) {
                                             %>
                                             <button type="button" class="btn btn-green" onclick="addUserToTicketC()">Add</button>
                                             <%}%>
@@ -454,7 +455,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <%
-                                                        List<TmTicketsHasUmUser> loadTicketHasUSer = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                                                        List<TmTicketsHasUmUser> loadTicketHasUSer = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                                                         if (!loadTicketHasUSer.isEmpty()) {
                                                             for (TmTicketsHasUmUser elemTHU : loadTicketHasUSer) {
                                                     %>
@@ -463,7 +464,7 @@
                                                         <td><%=elemTHU.getUmUser().getFirstName()%> <%=elemTHU.getUmUser().getLastName()%></td>
                                                         <td></td>
                                                         <td>
-
+                                                            <%--
                                                             <%
                                                                 if (checkLogedUserInQueueTC != null) {
                                                                     if (elemTHU.getUmUser().getId() != selectedTicket.getCreatedBy()) {
@@ -471,6 +472,7 @@
                                                             <button onclick="removeUserFromTicket(<%=elemTHU.getUmUser().getId()%>,<%=elemTHU.getTmTickets().getId()%>)" type='button' class='btn btn-sm btn-danger' value='Remove'><span class='fa fa-remove'>Remove</span></button>
                                                             <%}
                                                                 }%>
+                                                            --%>
                                                         </td>
                                                     </tr>
                                                     <%}
@@ -480,19 +482,8 @@
                                         </div>
                                     </div>
                                     <%}%>
-
                                     <%
-                                        //                                check log user is in selected ticket
-                                        TmTicketsHasUmUser checkTicketAssignedToLogedUser = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getUsersByTicketIdAndUserId(ses, selectedTicket.getId(), logedUser.getId());
-                                        if (checkTicketAssignedToLogedUser != null) {
-                                    %>
-                                    <input type="hidden" id="checkTicketAssignedToUser" value="1">
-                                    <%} else {%>
-                                    <input type="hidden" id="checkTicketAssignedToUser" value="0">
-                                    <%}%>
-
-                                    <%
-                                        if ((checkTicketAssignedToLogedUser != null) && selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETPENDING || selectedTicket.getStatus() == STATIC_DATA_MODEL.TICKETACTIVE) {
+                                        if ((checkLogedUserInTicket != null) || selectedTicket.getCreatedBy() == logedUser.getId()) {
                                     %>
                                     <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
                                         <div class="row mb-3">
@@ -508,13 +499,11 @@
                                                 <input type="file" class="form-control" id="ticketReplyFiles" name="ticketReplyFiles" multiple="multiple">
                                                 <input type="hidden" id="ticketToReply" name="ticketToReply" value="<%=selectedTicket.getId()%>">
                                             </div>
-                                            <label class="col-xs-12 col-sm-3 col-xxl-2 mb-1 mt-1" style="color: #fff;text-align: right"><span class="fa fa-dollar-sign"></span> Expenses</label>
-                                            <div class="col-xs-12 col-sm-6 col-xxl-3 mb-1"> <input type="number" class=" form-control" min="0" id="expenses" name="expenses" value="0"></div>
-                                                <%
-                                                    if (checkLogedUserInTicket != null) {
-                                                %>
+<!--                                            <label class="col-xs-12 col-sm-3 col-xxl-2 mb-1 mt-1" style="color: #fff;text-align: right"><span class="fa fa-dollar-sign"></span> Expenses</label>
+                                            <div class="col-xs-12 col-sm-6 col-xxl-3 mb-1"> <input type="number" class=" form-control" min="0" id="expenses" name="expenses" value="0"></div>-->
+                                               
                                             <div class="col-xs-12 col-sm-12 col-xxl-3 float-end" id="ADDRPLBTN"><button type="button" class="col-sm-2 btn btn-primary float-end" style="width: 100%" onclick="addReply()">Send Reply</button></div>
-                                            <%}%>
+                                           
                                             <!--<button class="btn btn-success float-end">Send</button>-->
                                         </div>
                                     </form>
@@ -686,11 +675,8 @@
     //    function for add new Reply
     function addReply() {
         var ticketReplyD = $('#ticketReplyDetails').summernote('code');
-        var expenses = $('#expenses').val();
+//        var expenses = $('#expenses').val();
         //    alert(ticketReplyD);
-        if (expenses < 0) {
-            swal("", "Enter Correct Amount", "warning");
-        } else {
             event.preventDefault();
             // Get form
             var form = $('#fileUploadForm')[0];
@@ -744,7 +730,7 @@
                     $("#btnSubmit").prop("disabled", false);
                 }
             });
-        }
+        
 
         //        var checkTicketAssignedToUser = $("#checkTicketAssignedToUser").val();
         //        var rep = "";
@@ -802,6 +788,41 @@
             },
             success: function (data) {
                 $('#right_content_div').html(data);
+            }
+        });
+    }
+    //    function for start Ticket
+    function startTicket() {
+        $.ajax({
+            url: "ticketManagement_startTicket",
+            type: "POST",
+            data: "ticketId=" + <%=selectedTicket.getId()%>,
+            beforeSend: function (xhr) {
+                $('#STRTBTN').empty();
+                $('#STRTBTN').html("<img src='assets/img/Wedges.gif' class='pull-right' style='width: 24px; height: 24px;'>");
+            },
+            success: function (data) {
+                var resultValue = JSON.parse(data);
+                if (resultValue.result === "0") {
+                    swal("", resultValue.displayMessage, "error");
+                } else if (resultValue.result === "2") {
+                    swal("", resultValue.displayMessage, "error");
+                    setTimeout(function () {
+                        window.location.href = "../../../index.jsp";
+                    }, 2000);
+                } else if (resultValue.result === "1") {
+                    confirmationTicket(<%=selectedTicket.getId()%>,<%=queId%>);
+                    swal({
+                        title: "Done",
+                        text: resultValue.displayMessage,
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                }
+                $('#STRTBTN').empty();
+                $('#STRTBTN').html("<button type='button' class='btn btn-info btn-sm' onclick='startTicket()'>Start</button>");
+            },
+            error: function (error) {
             }
         });
     }

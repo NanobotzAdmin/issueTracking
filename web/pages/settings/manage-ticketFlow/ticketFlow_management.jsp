@@ -4,29 +4,29 @@
     Author     : buddh
 --%>
 
-<%@page import="com.ring.configurationModel.Decemal_Format"%>
-<%@page import="com.ring.configurationModel.NumberFortmaing"%>
-<%@page import="com.ring.configurationModel.CASH_WORD_CONVERTER"%>
+<%@page import="com.it.configurationModel.Decemal_Format"%>
+<%@page import="com.it.configurationModel.NumberFortmaing"%>
+<%@page import="com.it.configurationModel.CASH_WORD_CONVERTER"%>
 <%@page import="java.text.DecimalFormat"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
-<%@page import="com.ring.db.QmSubCategories"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.configurationModel.DATE_TIME_MODEL"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.db.QmSubCategories"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.configurationModel.DATE_TIME_MODEL"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.QmCategories"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.QmCategories"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.log4j.Logger"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -59,12 +59,12 @@
 
     <div class="col" id="middle_content_div">
         <%
-            List<PmInterfaceComponent> getComponentByIterfaceId = new com.ring.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
+            List<PmInterfaceComponent> getComponentByIterfaceId = new com.it.privilegeManagementModel.PMS_PM_Interface_Component().getAllInterfaceComponentsByInterface(ses, pid);
             boolean ajax_new_ticket_detailsManagementMain = false;
 
             if (!getComponentByIterfaceId.isEmpty()) {
                 for (PmInterfaceComponent cmpt : getComponentByIterfaceId) {
-                    UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
+                    UmUserHasInterfaceComponent getUserHasComponentByUserAndComponentId = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdAndComponentIdUniq(ses, logedUser.getId(), cmpt.getId());
                     if (getUserHasComponentByUserAndComponentId != null) {
                         if (getUserHasComponentByUserAndComponentId.getPmInterfaceComponent().getComponentId().equals("TICKETFLOWMAINCOMPONENT")) {
                             ajax_new_ticket_detailsManagementMain = true;
@@ -126,12 +126,12 @@
                     <div class="widget widget-stats bg-gradient-cyan-blue p-1 m-1">
                         <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
                             <%
-                                List<Object[]> loadTicketsByUserANdQueue = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId);
+                                List<TmTickets> loadTicketsQueueAndCatANdSubCat = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueIdForTicketPage(ses,quId, catId, subCatId);
                                 //                                    System.out.println("li size = " + loadTicketsByUserANdCurrentMonth1.size());
 %>
                         <div class="stats-content">
-                            <h5>Tickets Created </h5>
-                            <div class="badge bg-info"><%=loadTicketsByUserANdQueue.size()%></div>
+                            <h5>Issues Created </h5>
+                            <div class="badge bg-info"><%=loadTicketsQueueAndCatANdSubCat.size()%></div>
                             <div class="stats-progress progress mb-1 mt-1">
                                 <div class="progress-bar" style="width: 70.1%;"></div>
                             </div>
@@ -140,17 +140,18 @@
                 </div>
                 <!-- END col-3 -->
                 <!-- BEGIN col-3 -->
+                <%--
                 <div class="col-sm-4 col-xs-12">
                     <div class="widget widget-stats bg-gradient-indigo p-1 m-1">
                         <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
                             <%
                                 double totTicketsExpenses = 0.00;
-                                //                            List<Object[]> loadTicketsByUserANdCurrentMonth2 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
+                                //                            List<Object[]> loadTicketsByUserANdCurrentMonth2 = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
                                 for (Object[] expensesCal : loadTicketsByUserANdQueue) {
                                     TmTickets ticketsByUser = (TmTickets) ses.load(TmTickets.class, (Integer) expensesCal[0]);
                                     totTicketsExpenses += ticketsByUser.getTotalExpence();
                                 }
-                                //                                double kk = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketTotalExpenceByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId);
+                                //                                double kk = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketTotalExpenceByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId);
                                 //                                  DecimalFormat df = new DecimalFormat("000,000,000.00");             
                                 //                                  String ll = df.format(kk);                  
                                 //                                  Double pp = Double.parseDouble(ll);
@@ -170,6 +171,7 @@
                         </div>
                     </div>
                 </div>
+                            --%>
                 <!-- END col-3 -->
                 <!-- BEGIN col-3 -->
                 <!--            <div class="col-xl-3 col-md-6">
@@ -190,22 +192,19 @@
                     <div class="widget widget-stats bg-gradient-green p-1 m-1">
                         <div class="stats-icon stats-icon-lg"><i class="fa fa-clock fa-fw"></i></div>
                             <%
-                                List<Object[]> loadCompleteTicketsByUserAndQueueId = new com.ring.ticketManagementModel.TMS_TM_Tickets().getCompleteTicketsByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId, STATIC_DATA_MODEL.TICKETCONFIRMED, STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETARCHIVE);
-                                //                                                System.out.println("size 2 = " + loadCompleteTicketsByUserAndCurrentMonth.size());
+                                List<TmTickets> loadCompleteTicketsByQueueIdOrCatIdOrSubCatId = new com.it.ticketManagementModel.TMS_TM_Tickets().getCompleteTicketsByQueueIdOrCatIdOrSubCatId(ses,quId, catId, subCatId, STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
+//                                                                                System.out.println("size 2 = " + loadCompleteTicketsByQueueIdOrCatIdOrSubCatId.size());
                                 long queueTimeDiff = 0;
                                 String convertQueueTime = "";
-                                if (!loadCompleteTicketsByUserAndQueueId.isEmpty()) {
-                                    for (Object[] data1 : loadCompleteTicketsByUserAndQueueId) {
-                                        TmTickets ticketsByUser = (TmTickets) ses.load(TmTickets.class, (Integer) data1[0]);
+                                if (!loadCompleteTicketsByQueueIdOrCatIdOrSubCatId.isEmpty()) {
+                                    for (TmTickets ticketsByUser : loadCompleteTicketsByQueueIdOrCatIdOrSubCatId) {
                                         if (ticketsByUser.getTimeToComplete() != null) {
                                             queueTimeDiff += ticketsByUser.getTimeToComplete();
                                         } else {
                                             queueTimeDiff += ticketsByUser.getConfirmedBy();
                                         }
                                     }
-
-                                    Long finalQueueTime = queueTimeDiff / loadCompleteTicketsByUserAndQueueId.size();
-
+                                    Long finalQueueTime = queueTimeDiff / loadCompleteTicketsByQueueIdOrCatIdOrSubCatId.size();
                                     //                                                System.out.println("final queue = " + finalQueueTime);
                                     convertQueueTime = DATE_TIME_MODEL.getTimeDiff(finalQueueTime);
                                 }
@@ -254,7 +253,7 @@
                                         </div>
                                         <div class="col-sm-3 col-xxl-2">
                                             &nbsp;<br>
-                                            <button type="button" class="btn btn-sm btn-yellow" onclick="newTicketDetails()">Create Ticket</button>
+                                            <button type="button" class="btn btn-sm btn-yellow" onclick="newTicketDetails()">Create Issue</button>
                                         </div>
                                         <!--                        <div class="col-sm-2">
                                                                     <button type="button" class="btn btn-outline-white">My Tickets</button>
@@ -272,7 +271,7 @@
                                         <select class="default-select2 form-control" id="loadCategoryByQueueId" onchange="loadSubCategoryByCategory(this.value)">
                                             <option value="0" selected="">-- Select One --</option>
                     <%
-                        List<QmCategories> loadCategoryForTickets = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, quId);
+                        List<QmCategories> loadCategoryForTickets = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, quId);
                         if (!loadCategoryForTickets.isEmpty()) {
                             for (QmCategories catByQueue : loadCategoryForTickets) {
                     %>
@@ -327,12 +326,12 @@
                                     </thead>
                                     <tbody>
                                         <%
-                                            //                                        List<Object[]> loadTicketsByUserANdQueue2 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId);
+                                            //                                        List<Object[]> loadTicketsByUserANdQueue2 = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndQueueId(ses, logedUser.getId(), quId, catId, subCatId);
                                             //                                        if (!loadTicketsByUserANdQueue2.isEmpty()) {
                                             //                                            for (Object[] data2 : loadTicketsByUserANdQueue2) {
                                             //                                                TmTickets ticketsByque = (TmTickets) ses.load(TmTickets.class, (Integer) data2[0]);
                                             int tfm = 0;
-                                            List<TmTickets> loadAllTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueOrCatOrSubCat(ses, quId, catId, subCatId);
+                                            List<TmTickets> loadAllTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueOrCatOrSubCat(ses, quId, catId, subCatId);
                                             if (!loadAllTickets.isEmpty()) {
                                                 for (TmTickets ticketsByque : loadAllTickets) {
                                                     tfm++;
@@ -370,14 +369,14 @@
                                                 <span class="text-info">Completed</span>
                                                 <%} else if (ticketsByque.getStatus() == STATIC_DATA_MODEL.TICKETCONFIRMED) {%>
                                                 <span class="text-inverse">Confirmed</span>
-                                                <%} else if (ticketsByque.getStatus() == STATIC_DATA_MODEL.TICKETARCHIVE) {%>
-                                                <span class="text-danger">Archive</span>
+                                                <%} else if (ticketsByque.getStatus() == STATIC_DATA_MODEL.TICKETSTARTED) {%>
+                                                <span class="text-danger">Started</span>
                                                 <%}%>
                                             </td>
                                             <td >
                                                 <div class="avatars">
                                                     <%
-                                                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByque.getId());
+                                                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByque.getId());
                                                         if (!loadUsersByTicket.isEmpty()) {
                                                             for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                                                     %>

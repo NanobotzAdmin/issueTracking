@@ -4,19 +4,19 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.TmReplyMedia"%>
-<%@page import="com.ring.db.TmTicketMedia"%>
+<%@page import="com.it.db.TmReplyMedia"%>
+<%@page import="com.it.db.TmTicketMedia"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategoriesHasUser"%>
-<%@page import="com.ring.db.QmCategoriesHasUser"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.TmTicketReply"%>
+<%@page import="com.it.db.QmSubCategoriesHasUser"%>
+<%@page import="com.it.db.QmCategoriesHasUser"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.TmTicketReply"%>
 <%@page import="java.util.List"%>
 <%@page import="java.nio.charset.StandardCharsets"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,7 +27,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -35,7 +35,7 @@
         try {
             String ticketKey = request.getParameter("ticketKey");
 
-            TmTickets selectedTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketByKey(ses, ticketKey);
+            TmTickets selectedTicket = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketByKey(ses, ticketKey);
 
             if (selectedTicket == null) {
 %> 
@@ -68,7 +68,7 @@
 
                 <div class="avatars">
                     <%
-                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                         if (!loadUsersByTicket.isEmpty()) {
                             for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                     %>
@@ -103,7 +103,7 @@
                     </div>
                     <%
 
-                        List<TmTicketMedia> getTicketMediaByTicket = new com.ring.ticketManagementModel.TMS_TM_Ticket_Media().getTicketMediaByTicketd(ses, selectedTicket.getId());
+                        List<TmTicketMedia> getTicketMediaByTicket = new com.it.ticketManagementModel.TMS_TM_Ticket_Media().getTicketMediaByTicketd(ses, selectedTicket.getId());
                         if (!getTicketMediaByTicket.isEmpty()) {
                             for (TmTicketMedia ticketMedi : getTicketMediaByTicket) {
                                 String filename = ticketMedi.getMediaPath();
@@ -144,7 +144,7 @@
                     <div class="col">
                         <!--BEGIN Chat for ticket-->
                         <ul class=" mb-4 me-4">
-                            <%                                List<TmTicketReply> loadTicketReplyByTicketId = new com.ring.ticketManagementModel.TMS_TM_Ticket_Reply().getTicketReplyByTicketId(ses, selectedTicket.getId());
+                            <%                                List<TmTicketReply> loadTicketReplyByTicketId = new com.it.ticketManagementModel.TMS_TM_Ticket_Reply().getTicketReplyByTicketId(ses, selectedTicket.getId());
                                 if (!loadTicketReplyByTicketId.isEmpty()) {
                                     for (TmTicketReply ticketReply : loadTicketReplyByTicketId) {
                                         UmUser replyUser = (UmUser) ses.load(UmUser.class, ticketReply.getCreatedBy());
@@ -165,7 +165,7 @@
                                         <div class="post-content" style="color: white;font-weight: 400;"> 
                                             <label><%=ticketReply.getReplyDescription()%></label>
                                             <%
-                                                List<TmReplyMedia> getReplyMediaByReply = new com.ring.ticketManagementModel.TMS_TM_Reply_Media().getReplyMediaByReplyId(ses, ticketReply.getId());
+                                                List<TmReplyMedia> getReplyMediaByReply = new com.it.ticketManagementModel.TMS_TM_Reply_Media().getReplyMediaByReplyId(ses, ticketReply.getId());
                                                 if (!getReplyMediaByReply.isEmpty()) {
                                                     for (TmReplyMedia replyMedi : getReplyMediaByReply) {
                                                         String replyMediaPath = replyMedi.getMediaPath();
@@ -259,7 +259,7 @@
                                             </thead>
                                             <tbody>
                                                 <%
-                                                    List<TmTicketsHasUmUser> loadTicketHasUSer = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
+                                                    List<TmTicketsHasUmUser> loadTicketHasUSer = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, selectedTicket.getId());
                                                     if (!loadTicketHasUSer.isEmpty()) {
                                                         for (TmTicketsHasUmUser elemTHU : loadTicketHasUSer) {
                                                 %>

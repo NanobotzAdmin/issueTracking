@@ -4,11 +4,11 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.LmLocationsHasUmUser"%>
+<%@page import="com.it.db.LmLocationsHasUmUser"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategories"%>
+<%@page import="com.it.db.QmSubCategories"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,7 +17,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -42,7 +42,7 @@
             <td></td>
         </tr>
         <%
-            List<LmLocationsHasUmUser> loadUsersByLocation = new com.ring.locationManagementModel.LMS_LM_Locations_Has_Um_User().getAllUsersByLocationId(ses, locationId);
+            List<LmLocationsHasUmUser> loadUsersByLocation = new com.it.locationManagementModel.LMS_LM_Locations_Has_Um_User().getAllUsersByLocationId(ses, locationId);
             if(!loadUsersByLocation.isEmpty()){
                 for (LmLocationsHasUmUser usersL : loadUsersByLocation) {
                     if(logedUser.getId() != usersL.getUmUser().getId()){

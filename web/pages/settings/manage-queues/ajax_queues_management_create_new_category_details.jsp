@@ -4,10 +4,10 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -17,7 +17,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -47,7 +47,7 @@
                                     <select class="default-select2 form-control" style="color: #fff" id="queueToAddCategory">
                                         <option selected="" value="0"  style="color: #000">-- Select Queue --</option>
                                         <%
-                                            List<QmQueue> loadQueueToAddCategory = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                            List<QmQueue> loadQueueToAddCategory = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if(!loadQueueToAddCategory.isEmpty()){
                                                 for (QmQueue elemQU : loadQueueToAddCategory) {
                                         %>
@@ -64,7 +64,7 @@
                                         <select class="default-select2 form-control" style="color: #fff" id="userToCategory">
                                             <option selected="" value="0" style="color: #000">-- Select User --</option>
                                             <%
-                                                List<UmUser> loadUsersToCatagory = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                List<UmUser> loadUsersToCatagory = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                 if (!loadUsersToCatagory.isEmpty()) {
                                                     for (UmUser elemC : loadUsersToCatagory) {
                                             %>

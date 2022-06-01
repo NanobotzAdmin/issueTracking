@@ -4,20 +4,20 @@
     Author     : dinuka
 --%>
 
-<%@page import="com.ring.db.LmLocations"%>
-<%@page import="com.ring.configurationModel.NumberFortmaing"%>
-<%@page import="com.ring.configurationModel.Decemal_Format"%>
-<%@page import="com.ring.db.TmTicketsHasUmUser"%>
+<%@page import="com.it.db.LmLocations"%>
+<%@page import="com.it.configurationModel.NumberFortmaing"%>
+<%@page import="com.it.configurationModel.Decemal_Format"%>
+<%@page import="com.it.db.TmTicketsHasUmUser"%>
 <%@page import="java.math.BigDecimal"%>
-<%@page import="com.ring.configurationModel.DATE_TIME_MODEL"%>
+<%@page import="com.it.configurationModel.DATE_TIME_MODEL"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.QmSubCategories"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.db.QmCategories"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.TmTickets"%>
+<%@page import="com.it.db.QmSubCategories"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.db.QmCategories"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.TmTickets"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
@@ -26,7 +26,7 @@
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
 
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -37,7 +37,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8" />
-        <title>Ring | Ticket Management</title>
+        <title>Nanobotz | Issues Tracking</title>
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
         <meta content="" name="description" />
         <meta content="" name="author" />
@@ -139,11 +139,11 @@
                 width: 100%;
                 display: block;
             }
-/*            .app-cover{
+            .app-cover{
 
                 background-image: url('assets/img/login-bg/login-bg-10.jpg');
 
-            }*/
+            }
             .glass-effect{
                 background: rgba( 255, 255, 255, 0.25 );
                 box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -259,7 +259,7 @@
     </head>
     <body>
         <!-- BEGIN page-cover -->
-        <!--<div class="app-cover" id="app-cover"></div>-->
+        <div class="app-cover" id="app-cover"></div>
         <!-- END page-cover -->
 
         <!-- BEGIN #loader -->
@@ -295,7 +295,7 @@
 
                                         <!-- BEGIN page-header -->
                                         <!--<h1 class="page-header">IT Queue <small>All technology related issues are directed here</small></h1>-->
-                                        <h1 class="page-header">My Tickets<br></h1>
+                                        <h1 class="page-header">All Issues<br></h1>
                                         <!-- END page-header -->
 
                                         <!--END page title & breadcrumbs-->
@@ -309,14 +309,14 @@
                                         <ol class="breadcrumb float-xl-end">
                                             <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
                                             <li class="breadcrumb-item"><a href="javascript:;">Technical</a></li>
-                                            <li class="breadcrumb-item active">Ticket List</li>
+                                            <li class="breadcrumb-item active">Issues List</li>
                                         </ol>
                                         <!-- END breadcrumb -->
                                     </div>
                                 </div><!-- middle top header details row-->
                                 <div class="row">
                                     <div class="col">
-                                        <small>All tickets assigned to you or you have created</small>
+                                        <small>All Issues</small>
                                     </div>
                                 </div>
 
@@ -325,15 +325,15 @@
                                 <div class="row">
                                     <!-- BEGIN col-3 -->
                                     <%
-                                        List<Object[]> loadTicketsByUserANdCurrentMonth1 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
+                                        List<TmTickets> loadAllTickets2 = new com.it.ticketManagementModel.TMS_TM_Tickets().getAllTicketsByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                         //                                    System.out.println("li size = " + loadTicketsByUserANdCurrentMonth1.size());
-%>
+                                    %>
                                     <div class="col-xl-3 col-sm-4 col-xs-12">
                                         <div class="widget widget-stats bg-gradient-cyan-blue p-1">
                                             <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
                                             <div class="stats-content">
-                                                <h5>Tickets Created </h5>
-                                                <div class="badge bg-info"><%=loadTicketsByUserANdCurrentMonth1.size()%></div>
+                                                <h5>Issues Created </h5>
+                                                <div class="badge bg-info"><%=loadAllTickets2.size()%></div>
                                                 <div class="stats-progress progress mb-1 mt-1">
                                                     <div class="progress-bar" style="width: 70.1%;"></div>
                                                 </div>
@@ -342,13 +342,14 @@
                                     </div>
                                     <!-- END col-3 -->
                                     <!-- BEGIN col-3 -->
+                                    <%--
                                     <div class="col-xl-4 col-sm-4 col-xs-12">
                                         <div class="widget widget-stats bg-gradient-indigo p-1">
                                             <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
                                             <div class="stats-content">
                                                 <%
                                                     double totTicketsExpenses = 0.00;
-                                                    List<Object[]> loadTicketsByUserANdCurrentMonth2 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
+                                                    List<Object[]> loadTicketsByUserANdCurrentMonth2 = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
                                                     for (Object[] expenses : loadTicketsByUserANdCurrentMonth2) {
                                                         TmTickets ticketsByUser = (TmTickets) ses.load(TmTickets.class, (Integer) expenses[0]);
                                                         totTicketsExpenses += ticketsByUser.getTotalExpence();
@@ -365,6 +366,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    --%>
                                     <!-- END col-3 -->
                                     <!-- BEGIN col-3 -->
                                     <!--                                                                    <div class="col-xl-3 col-md-6">
@@ -372,7 +374,7 @@
                                                                                                                 <div class="stats-icon stats-icon-lg"><i class="fa fa-archive fa-fw"></i></div>
                                                                                                                 <div class="stats-content">
                                     <%
-                                        //                                                List<Object[]> loadCompleteTicketsByUserAndCurrentMonth = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonthAndStatus(ses, logedUser.getId(), STATIC_DATA_MODEL.TICKETCONFIRMED,STATIC_DATA_MODEL.TICKETCOMPLETED);
+                                        //                                                List<Object[]> loadCompleteTicketsByUserAndCurrentMonth = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonthAndStatus(ses, logedUser.getId(), STATIC_DATA_MODEL.TICKETCONFIRMED,STATIC_DATA_MODEL.TICKETCOMPLETED);
                                         //                                    System.out.println("size 2 = " + loadCompleteTicketsByUserAndCurrentMonth.size() );
                                     %>
                                                                                 <h5>Completion <mark></mark></h5>
@@ -390,29 +392,23 @@
                                             <div class="stats-icon stats-icon-lg"><i class="fa fa-clock fa-fw"></i></div>
                                             <div class="stats-content">
                                                 <%
-                                                    List<Object[]> loadCompleteTicketsByUserAndCurrentMonth = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonthAndStatus(ses, logedUser.getId(), STATIC_DATA_MODEL.TICKETCONFIRMED, STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETARCHIVE);
-                                                    //                                                System.out.println("size 2 = " + loadCompleteTicketsByUserAndCurrentMonth.size());
+                                                    List<TmTickets> loadCompleteTicketsToHome = new com.it.ticketManagementModel.TMS_TM_Tickets().getAllTicketsToHomePage(ses, STATIC_DATA_MODEL.TICKETCOMPLETED, STATIC_DATA_MODEL.TICKETCONFIRMED);
                                                     long queueTimeDiff = 0;
                                                     String convertQueueTime = "";
-                                                    if (!loadCompleteTicketsByUserAndCurrentMonth.isEmpty()) {
-                                                        for (Object[] data1 : loadCompleteTicketsByUserAndCurrentMonth) {
-                                                            TmTickets ticketsByUser = (TmTickets) ses.load(TmTickets.class, (Integer) data1[0]);
-                                                            //                                                    System.out.println("ticket id = " + ticketsByUser.getId());
-                                                            if (ticketsByUser.getTimeToComplete() != null) {
-                                                                queueTimeDiff += ticketsByUser.getTimeToComplete();
+                                                    if (!loadCompleteTicketsToHome.isEmpty()) {
+                                                        for (TmTickets ticketsToHome : loadCompleteTicketsToHome) {
+                                                            if (ticketsToHome.getTimeToComplete() != null) {
+                                                                queueTimeDiff += ticketsToHome.getTimeToComplete();
                                                             } else {
-                                                                queueTimeDiff += ticketsByUser.getConfirmedBy();
+                                                                queueTimeDiff += ticketsToHome.getConfirmedBy();
                                                             }
                                                         }
-
-                                                        Long finalQueueTime = queueTimeDiff / loadCompleteTicketsByUserAndCurrentMonth.size();
-
-                                                        //                                                System.out.println("final queue = " + finalQueueTime);
+                                                        Long finalQueueTime = queueTimeDiff / loadCompleteTicketsToHome.size();
                                                         convertQueueTime = DATE_TIME_MODEL.getTimeDiff(finalQueueTime);
                                                     }
                                                 %>
 
-                                                <h5>QueueTime </h5>
+                                                <h5>Queue Time </h5>
                                                 <div class="badge bg-green mb-1"><%=convertQueueTime%></div>
                                                 <div class="stats-progress progress mb-1 mt-1">
                                                     <div class="progress-bar" style="width: 54.9%;"></div>
@@ -449,13 +445,13 @@
                                                     </thead>
                                                     <tbody>
                                                         <%
-//                                                            List<Object[]> loadTicketsByUserANdCurrentMonth3 = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
+//                                                            List<Object[]> loadTicketsByUserANdCurrentMonth3 = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByUserIdAndCurrentMonth(ses, logedUser.getId());
 //                                                            System.out.println("si = " + loadTicketsByUserANdCurrentMonth3.size());
 //                                                            if (!loadTicketsByUserANdCurrentMonth3.isEmpty()) {
 //                                                                for (Object[] data : loadTicketsByUserANdCurrentMonth3) {
 //                                                                    TmTickets ticketsByUser = (TmTickets) ses.load(TmTickets.class, (Integer) data[0]);
                                                             int tfmM = 0;
-                                                            List<TmTickets> loadAllTickets = new com.ring.ticketManagementModel.TMS_TM_Tickets().getAllTicketsByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                            List<TmTickets> loadAllTickets = new com.it.ticketManagementModel.TMS_TM_Tickets().getAllTicketsByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                             if (!loadAllTickets.isEmpty()) {
                                                                 for (TmTickets ticketsByUser : loadAllTickets) {
                                                                     tfmM++;
@@ -493,14 +489,14 @@
                                                                 <span class="text-info">Completed</span>
                                                                 <%} else if (ticketsByUser.getStatus() == STATIC_DATA_MODEL.TICKETCONFIRMED) {%>
                                                                 <span class="text-inverse">Confirmed</span>
-                                                                <%} else if (ticketsByUser.getStatus() == STATIC_DATA_MODEL.TICKETARCHIVE) {%>
-                                                                <span class="text-danger">Archive</span>
+                                                                <%} else if (ticketsByUser.getStatus() == STATIC_DATA_MODEL.TICKETSTARTED) {%>
+                                                                <span class="text-danger">Started</span>
                                                                 <%}%>
                                                             </td>
                                                             <td >
                                                                 <div class="avatars">
                                                                     <%
-                                                                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.ring.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByUser.getId());
+                                                                        List<TmTicketsHasUmUser> loadUsersByTicket = new com.it.ticketManagementModel.TMS_TM_Tickets_Has_Um_User().getAllUsersByTicketId(ses, ticketsByUser.getId());
                                                                         if (!loadUsersByTicket.isEmpty()) {
                                                                             for (TmTicketsHasUmUser ticketUsrs : loadUsersByTicket) {
                                                                     %>
@@ -581,7 +577,7 @@
                                             <option value="0" selected="">-- Select Branch --</option>
 
                                             <%
-                                                List<LmLocations> loadActiveLocations = new com.ring.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMALL);
+                                                List<LmLocations> loadActiveLocations = new com.it.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMALL);
                                                 if (!loadActiveLocations.isEmpty()) {
                                                     for (LmLocations locations : loadActiveLocations) {
                                             %>
@@ -1295,10 +1291,10 @@
 
             function myFunction(x) {
                 if (x.matches) { // If media query matches
-                    
+
                     sidebarContainer.classList.add("app-sidebar-minified");
                 } else {
-                    
+
                     sidebarContainer.classList.remove("app-sidebar-minified");
                 }
             }
@@ -1312,12 +1308,13 @@
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-GY65SCH36V"></script>
         <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag() {
-                        dataLayer.push(arguments);}
-                    gtag('js', new Date());
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
-                    gtag('config', 'G-GY65SCH36V');
+            gtag('config', 'G-GY65SCH36V');
         </script>
 
 

@@ -4,13 +4,13 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.QmQueueHasQuestion"%>
-<%@page import="com.ring.db.RcasQuestion"%>
-<%@page import="com.ring.db.QmQueueHasUser"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueHasQuestion"%>
+<%@page import="com.it.db.RcasQuestion"%>
+<%@page import="com.it.db.QmQueueHasUser"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -20,7 +20,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -49,7 +49,7 @@
                                             <select class="form-control" style="color: #fff" id="queueToRCU">
                                             <option selected="" value="0" style="color: #000">-- Select Queue --</option>
                                             <%
-                                                List<QmQueue> loadQueueToRCU = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                                List<QmQueue> loadQueueToRCU = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                                 if (!loadQueueToRCU.isEmpty()) {
                                                     for (QmQueue elemQRCU : loadQueueToRCU) {
                                             %>
@@ -76,7 +76,7 @@
                                                 </thead>
                                                 <tbody>
                                                      <%
-                                            List<QmQueueHasQuestion> loadQuestionHasQueues = new com.ring.rootCauseManagementModel.RCMS_QM_Queue_Has_Question().getAllRCQHasQueueByRCQId(ses, selectedRCQ.getId());
+                                            List<QmQueueHasQuestion> loadQuestionHasQueues = new com.it.rootCauseManagementModel.RCMS_QM_Queue_Has_Question().getAllRCQHasQueueByRCQId(ses, selectedRCQ.getId());
                                             if(!loadQuestionHasQueues.isEmpty()){
                                                 for (QmQueueHasQuestion queuesByRCQ : loadQuestionHasQueues) {
                                                    

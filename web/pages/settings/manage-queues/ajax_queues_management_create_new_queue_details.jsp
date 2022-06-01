@@ -4,10 +4,10 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.db.QmQueueIcons"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.QmQueueIcons"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -17,7 +17,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -57,7 +57,7 @@
                                     <div class="pe-1">
                                         <select class="form-control default-select2" style="color: #fff" id="queueicon" name="queueicon" onchange="changeIcon(this.value)">
                                             <option selected="" value="0" style="color: #000" >-- Select Icon --</option>
-                                            <%                                        List<QmQueueIcons> icons = new com.ring.queueManagementModel.QMS_QM_Queue().getIcons(ses);
+                                            <%                                        List<QmQueueIcons> icons = new com.it.queueManagementModel.QMS_QM_Queue().getIcons(ses);
                                                 if (!icons.isEmpty()) {
                                                     for (QmQueueIcons elem : icons) {
 
@@ -99,7 +99,7 @@
                                     <label class="form-label">Select User</label>
                                     <select class="form-control default-select2" style="color: #fff" id="userToQueue">
                                         <option selected="" value="0" style="color: #000">-- Select User --</option>
-                                        <%                                                List<UmUser> loadUsersToQueue = new com.ring.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                                        <%                                                List<UmUser> loadUsersToQueue = new com.it.userManagementModel.UMS_UM_User().getAllUsersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                                             if (!loadUsersToQueue.isEmpty()) {
                                                 for (UmUser elemQ : loadUsersToQueue) {
                                         %>

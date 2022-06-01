@@ -7,7 +7,7 @@
 <%@page import="org.json.simple.JSONArray"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Query"%>
-<%@page import="com.ring.connection.Connection"%>
+<%@page import="com.it.connection.Connection"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
  <%

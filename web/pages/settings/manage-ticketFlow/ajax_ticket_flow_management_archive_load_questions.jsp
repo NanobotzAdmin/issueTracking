@@ -4,14 +4,14 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.RcasAnswers"%>
-<%@page import="com.ring.db.QmQueueHasQuestion"%>
-<%@page import="com.ring.db.RcasQuestion"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.RcasAnswers"%>
+<%@page import="com.it.db.QmQueueHasQuestion"%>
+<%@page import="com.it.db.RcasQuestion"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,7 +20,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -34,7 +34,7 @@
 %> 
 
 <%
-    List<QmQueueHasQuestion> loadQuestionByQueue = new com.ring.rootCauseManagementModel.RCMS_QM_Queue_Has_Question().getAllQueueByQueueId(ses, queId);
+    List<QmQueueHasQuestion> loadQuestionByQueue = new com.it.rootCauseManagementModel.RCMS_QM_Queue_Has_Question().getAllQueueByQueueId(ses, queId);
 //    System.out.println("li size = " + loadQuestionByQueue.size());
 %>
 <input type="hidden" disabled="" id="liSize" value="<%=loadQuestionByQueue.size()%>">
@@ -49,7 +49,7 @@
     <select class="default-select2 form-control" style="color: #000;border: 1px #000 solid" id="answerForQuestion<%=questinsByqueue.getRcasQuestion().getId()%>" onchange="addQandAToMap('<%=questinsByqueue.getRcasQuestion().getId()%>', this.value)">
         <option value="0" selected="" disabled="">-- Select One --</option>
         <%
-            List<RcasAnswers> loadAllAnswers = new com.ring.rootCauseManagementModel.RCMS_Rcas_Answers().getAllAnswersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+            List<RcasAnswers> loadAllAnswers = new com.it.rootCauseManagementModel.RCMS_Rcas_Answers().getAllAnswersByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
             if (!loadAllAnswers.isEmpty()) {
                 for (RcasAnswers answ : loadAllAnswers) {
         %>

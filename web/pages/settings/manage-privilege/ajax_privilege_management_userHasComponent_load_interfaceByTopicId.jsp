@@ -5,14 +5,14 @@
 --%>
 
 <%@page import="org.hibernate.Transaction"%>
-<%@page import="com.ring.db.PmInterfaceComponent"%>
-<%@page import="com.ring.db.PmUserRoleHasInterfaceComponent"%>
-<%@page import="com.ring.db.UmUser"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.PmInterface"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmUserRole"%>
-<%@page import="com.ring.db.PmInterfaceTopic"%>
+<%@page import="com.it.db.PmInterfaceComponent"%>
+<%@page import="com.it.db.PmUserRoleHasInterfaceComponent"%>
+<%@page import="com.it.db.UmUser"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.PmInterface"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmUserRole"%>
+<%@page import="com.it.db.PmInterfaceTopic"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
@@ -22,7 +22,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -36,7 +36,7 @@
             
             UmUser selectedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getParameter("loadUsersForPrivilage")));
 //            check user has interface component by interface topic
-            List<UmUserHasInterfaceComponent> getUserInterfaceTopicHasComponent = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdTopicId(ses, selectedUser.getId(), selectedInterfaceTopicUser.getId());
+            List<UmUserHasInterfaceComponent> getUserInterfaceTopicHasComponent = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserIdTopicId(ses, selectedUser.getId(), selectedInterfaceTopicUser.getId());
 
             if (!getUserInterfaceTopicHasComponent.isEmpty()) {
 
@@ -64,7 +64,7 @@
         <br>
 <%
 //        get interface by toipic
-    List<PmInterface> getInterfacesByTopicId = new com.ring.privilegeManagementModel.PMS_PM_Interface().getAllInterfacesByTopic(ses, STATIC_DATA_MODEL.PMACTIVE, selectedInterfaceTopicUser.getId());
+    List<PmInterface> getInterfacesByTopicId = new com.it.privilegeManagementModel.PMS_PM_Interface().getAllInterfacesByTopic(ses, STATIC_DATA_MODEL.PMACTIVE, selectedInterfaceTopicUser.getId());
     if (!getInterfacesByTopicId.isEmpty()) {
         for (PmInterface allInterfacesUs : getInterfacesByTopicId) {
 %>
@@ -72,7 +72,7 @@
 <div class="col-sm-9"style="border-bottom: #ccc; border-bottom-style: ridge">
     <%
 //        check user has interface component by interface
-        List<UmUserHasInterfaceComponent> getUserInterfaceHasComponent = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserAndInterfaceId(ses, selectedUser.getId(), allInterfacesUs.getId());
+        List<UmUserHasInterfaceComponent> getUserInterfaceHasComponent = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserAndInterfaceId(ses, selectedUser.getId(), allInterfacesUs.getId());
         if (!getUserInterfaceHasComponent.isEmpty()) {
     %>
     <label class=" control-label"style="margin-top: 10px; color: #fff"><%=allInterfacesUs.getInterfaceName()%></label>

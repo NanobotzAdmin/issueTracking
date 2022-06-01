@@ -4,24 +4,24 @@
     Author     : dinuka
 --%>
 
-<%@page import="com.ring.db.TmTickets"%>
-<%@page import="com.ring.db.QmSubCategories"%>
-<%@page import="com.ring.db.QmCategories"%>
-<%@page import="com.ring.db.QmQueue"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.TmTickets"%>
+<%@page import="com.it.db.QmSubCategories"%>
+<%@page import="com.it.db.QmCategories"%>
+<%@page import="com.it.db.QmQueue"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
-<%@page import="com.ring.db.UmUserHasInterfaceComponent"%>
-<%@page import="com.ring.db.PmInterface"%>
+<%@page import="com.it.db.UmUserHasInterfaceComponent"%>
+<%@page import="com.it.db.PmInterface"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.PmInterfaceTopic"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.PmInterfaceTopic"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     if (request.getSession().getAttribute("nowLoginUser") != null) {
 
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Logger logger = Logger.getLogger(this.getClass().getName());
         UmUser logedUser = (UmUser) ses.load(UmUser.class, Integer.parseInt(request.getSession().getAttribute("nowLoginUser").toString()));
         try {
@@ -38,10 +38,10 @@
             <div class="menu-header">Queue List</div>
 
             <%
-                List<QmQueue> loadAllActiveQueuesToSideBar = new com.ring.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
+                List<QmQueue> loadAllActiveQueuesToSideBar = new com.it.queueManagementModel.QMS_QM_Queue().getAllQueuesByStatus(ses, STATIC_DATA_MODEL.PMACTIVE);
                 if (!loadAllActiveQueuesToSideBar.isEmpty()) {
                     for (QmQueue queueSB : loadAllActiveQueuesToSideBar) {
-                        List<TmTickets> getTicketsByQueueId = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueIdAndStatus(ses, queueSB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
+                        List<TmTickets> getTicketsByQueueId = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByQueueIdAndStatus(ses, queueSB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
                         String bgImagePath = "assets/img/login-gb/login-bg-10.jpg";
                         if (queueSB.getBackgroundImage() != null) {
                             bgImagePath = "";
@@ -69,10 +69,10 @@
                 </a>
                 <div class="menu-submenu">
                     <%
-                        List<QmCategories> loadCategoryByQueueIdToSB = new com.ring.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, queueSB.getId());
+                        List<QmCategories> loadCategoryByQueueIdToSB = new com.it.queueManagementModel.QMS_QM_Categories().getCategoryByQueueId(ses, queueSB.getId());
                         if (!loadCategoryByQueueIdToSB.isEmpty()) {
                             for (QmCategories categorySB : loadCategoryByQueueIdToSB) {
-                                List<TmTickets> getTicketsByCategoryId = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsByCategoryIdAndStatus(ses, categorySB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
+                                List<TmTickets> getTicketsByCategoryId = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsByCategoryIdAndStatus(ses, categorySB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
                     %>
                     <div class="menu-item has-sub">
                         <a href="javascript:;" class="menu-link">
@@ -87,10 +87,10 @@
                         </a>
                         <div class="menu-submenu">
                             <%
-                                List<QmSubCategories> loadSubCategoryByCategoryIdSB = new com.ring.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, categorySB.getId());
+                                List<QmSubCategories> loadSubCategoryByCategoryIdSB = new com.it.queueManagementModel.QMS_QM_Sub_Categories().getSubCategoryBYCategoryId(ses, categorySB.getId());
                                 if (!loadSubCategoryByCategoryIdSB.isEmpty()) {
                                     for (QmSubCategories subCategorySB : loadSubCategoryByCategoryIdSB) {
-                                        List<TmTickets> getTicketsBySubCategory = new com.ring.ticketManagementModel.TMS_TM_Tickets().getTicketsBySubCategoryIdAndStatus(ses, subCategorySB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
+                                        List<TmTickets> getTicketsBySubCategory = new com.it.ticketManagementModel.TMS_TM_Tickets().getTicketsBySubCategoryIdAndStatus(ses, subCategorySB.getId(),STATIC_DATA_MODEL.TICKETACTIVE);
                             %>
                             <div class="menu-item">
                                 <a href="javascript:;" class="menu-link">
@@ -225,13 +225,13 @@
 
             <%
 //                                        get all active interface topicks
-                List<PmInterfaceTopic> loadAllInterfaceTopics = new com.ring.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
+                List<PmInterfaceTopic> loadAllInterfaceTopics = new com.it.privilegeManagementModel.PMS_PM_Interface_Topic().getAllActiveInterfaceTopics(ses, STATIC_DATA_MODEL.PMACTIVE);
 
 //                                          get all active interfaces
-                List<PmInterface> loadAllInterface = new com.ring.privilegeManagementModel.PMS_PM_Interface().getAllActiveInterfaces(ses, STATIC_DATA_MODEL.PMACTIVE);
+                List<PmInterface> loadAllInterface = new com.it.privilegeManagementModel.PMS_PM_Interface().getAllActiveInterfaces(ses, STATIC_DATA_MODEL.PMACTIVE);
 
 //                                         get all user has interfce components
-                List<UmUserHasInterfaceComponent> loadUserHasInterfaceComponent = new com.ring.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserId(ses, logedUser.getId());
+                List<UmUserHasInterfaceComponent> loadUserHasInterfaceComponent = new com.it.privilegeManagementModel.PMS_PM_User_Has_Interface_Component().getAllUserHasInterfaceComponentByUserId(ses, logedUser.getId());
 //                System.out.println("size = " + loadUserHasInterfaceComponent.size());
                 String encryptPid = "";
 

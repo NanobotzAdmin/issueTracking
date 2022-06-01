@@ -4,10 +4,10 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.PmUserRole"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.PmUserRole"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Transaction"%>
 <%@page import="org.hibernate.Session"%>
@@ -17,7 +17,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
         Transaction tr = ses.beginTransaction();
         tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -30,7 +30,7 @@
 <label class="form-label">Select User</label>
 <select class="default-select2 form-control" id="loadUsersForPrivilage" name="loadUsersForPrivilage" style="width: 100%;color: #000" onchange="changeTopics2()">
     <option value="0">-- Select User --</option>
-    <%        List<UmUser> loadUsersByUserRole = new com.ring.userManagementModel.UMS_UM_User().searchUsersByStatusAndUserRole(ses, selectedUserRole.getId(), STATIC_DATA_MODEL.PMALL);
+    <%        List<UmUser> loadUsersByUserRole = new com.it.userManagementModel.UMS_UM_User().searchUsersByStatusAndUserRole(ses, selectedUserRole.getId(), STATIC_DATA_MODEL.PMALL);
         if (!loadUsersByUserRole.isEmpty()) {
             for (UmUser elem : loadUsersByUserRole) {
     %>

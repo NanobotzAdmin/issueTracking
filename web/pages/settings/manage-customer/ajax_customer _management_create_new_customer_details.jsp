@@ -4,10 +4,10 @@
     Author     : JOY
 --%>
 
-<%@page import="com.ring.configurationModel.STATIC_DATA_MODEL"%>
-<%@page import="com.ring.db.LmLocations"%>
+<%@page import="com.it.configurationModel.STATIC_DATA_MODEL"%>
+<%@page import="com.it.db.LmLocations"%>
 <%@page import="java.util.List"%>
-<%@page import="com.ring.db.UmUser"%>
+<%@page import="com.it.db.UmUser"%>
 <%@page import="org.apache.log4j.Logger"%>
 <%@page import="org.hibernate.Session"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +16,7 @@
     if (request.getSession().getAttribute("nowLoginUser") == null) {
         response.sendRedirect("index.jsp");
     } else {
-        Session ses = com.ring.connection.Connection.getSessionFactory().openSession();
+        Session ses = com.it.connection.Connection.getSessionFactory().openSession();
 //        Transaction tr = ses.beginTransaction();
 //        tr.commit();
         Logger logger = Logger.getLogger(this.getClass().getName());
@@ -45,7 +45,7 @@
                             <select class="form-control default-select2" style="color: #000" id="loadBranches">
                                 <option value="0" selected="">-- Select Branch --</option>
                                 <%
-                                    List<LmLocations> loadBranches = new com.ring.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
+                                    List<LmLocations> loadBranches = new com.it.locationManagementModel.LMS_LM_Locations().getAllLocationsByStatus(ses, STATIC_DATA_MODEL.PMDEACTIVE);
                                     if(!loadBranches.isEmpty()){
                                         for (LmLocations branch : loadBranches) {
                                 %>
