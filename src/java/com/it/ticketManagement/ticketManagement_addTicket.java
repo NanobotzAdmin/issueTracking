@@ -219,9 +219,9 @@ public class ticketManagement_addTicket extends HttpServlet {
                                                     FileItem ticketMediaFiles = element;
 //                                                    System.out.println("ticketMediaFiles = " + ticketMediaFiles);
                                                     String extensionRemoved = ticketMediaFiles.getName().split("\\.")[1];
-                                                    if (extensionRemoved.equalsIgnoreCase("png") || extensionRemoved.equalsIgnoreCase("GIF") || extensionRemoved.equalsIgnoreCase("JPEG") || extensionRemoved.equalsIgnoreCase("TIFF")
-                                                            || extensionRemoved.equalsIgnoreCase("JPG") || extensionRemoved.equalsIgnoreCase("mp4") || extensionRemoved.equalsIgnoreCase("mp3") || extensionRemoved.equalsIgnoreCase("doc")
-                                                            || extensionRemoved.equalsIgnoreCase("docx") || extensionRemoved.equalsIgnoreCase("CSV") || extensionRemoved.equalsIgnoreCase("XLS ") || extensionRemoved.equalsIgnoreCase("xlsx")) {
+//                                                    if (extensionRemoved.equalsIgnoreCase("png") || extensionRemoved.equalsIgnoreCase("GIF") || extensionRemoved.equalsIgnoreCase("JPEG") || extensionRemoved.equalsIgnoreCase("TIFF")
+//                                                            || extensionRemoved.equalsIgnoreCase("JPG") || extensionRemoved.equalsIgnoreCase("mp4") || extensionRemoved.equalsIgnoreCase("mp3") || extensionRemoved.equalsIgnoreCase("doc")
+//                                                            || extensionRemoved.equalsIgnoreCase("docx") || extensionRemoved.equalsIgnoreCase("CSV") || extensionRemoved.equalsIgnoreCase("XLS ") || extensionRemoved.equalsIgnoreCase("xlsx")) {
                                                         if (ticketMediaFiles.getSize() <= 12000000) {
                                                             String saveTicketFiles = new com.it.fileUploadManagementModel.fileUpload_Management().fileItem(ticketMediaFiles, QueueBackGroundEmage);
 //                                                    System.out.println("type = " + ticketMediaFiles.getContentType());
@@ -230,7 +230,7 @@ public class ticketManagement_addTicket extends HttpServlet {
                                                             String saveTicketMediaSessionActivityContent = saveTicketMedia.getId() + " Issue Media has been Saved by " + activeUser.getFirstName() + " on " + addedDate;
                                                             SmSessionActivity sessionActivityToAddTicketMedia = new com.it.userManagementModel.UMS_UM_Session_Activity().saveSessionActivityNew(ses, saveTicketMediaSessionActivityContent, new Date(), STATIC_DATA_MODEL.INSERT, STATIC_DATA_MODEL.ISSUESMANAGEMENT, addNewTicket.getId(), activeSession, activeUser);
                                                         }
-                                                    }
+//                                                    }
                                                 }
                                             }
                                         }
