@@ -68,12 +68,16 @@
                         <div class="row">
                             <div class="col">Gender</div>
                             <div class="col">
-                                 <%
+                                <%
+                                     if(selectedUser.getGender() != null){
                                     if (selectedUser.getGender() == 1) {
                                         out.write("Male");
                                     } else {
                                         out.write("Female");
                                     }
+                                     }else{
+                                          out.write("--");
+                                     }
                                 %>
                             </div>
                         </div>
