@@ -138,10 +138,10 @@ public class userManagement_addUser extends HttpServlet {
                         useRoleNumber = Integer.parseInt(userRole);
                     }
                     if (userImage != null) {
-                        if (!userImage.getContentType().equals("image/jpeg")) {
-                            resultMap.put("result", "0");
-                            resultMap.put("displayMessage", "Select JPG Image File");
-                        } else {
+//                        if (!userImage.getContentType().equals("image/jpeg")) {
+//                            resultMap.put("result", "0");
+//                            resultMap.put("displayMessage", "Select JPG Image File");
+//                        } else {
 //                        selected user role
                             PmUserRole selectedUserRole = (PmUserRole) ses.load(PmUserRole.class, useRoleNumber);
                             if (selectedUserRole == null) {
@@ -223,7 +223,7 @@ public class userManagement_addUser extends HttpServlet {
                                     }
                                 }
                             }
-                        }
+//                        }
                     } else {
                         resultMap.put("result", "0");
                         resultMap.put("displayMessage", "Select Profile Image");

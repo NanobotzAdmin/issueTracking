@@ -141,12 +141,12 @@ public class userManagement_updateUserProfile extends HttpServlet {
                         selectUsr = Integer.parseInt(selectedUserForUp);
                     }
                     if (userImage != null) {
-                        if (!userImage.getContentType().equals("image/jpeg")) {
-                            resultMap.put("result", "0");
-                            resultMap.put("displayMessage", "Select JPG Image File");
-                        } else {
+//                        if (!userImage.getContentType().equals("image/jpeg")) {
+//                            resultMap.put("result", "0");
+//                            resultMap.put("displayMessage", "Select JPG Image File");
+//                        } else {
                             valied1 = true;
-                        }
+//                        }
                     } else {
                         valied1 = true;
                     }
